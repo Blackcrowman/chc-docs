@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NHS CHC Basic Guide - CHC Blueprint</title>
+    <!-- Inter Font Import -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --chc-navy: #1E3A8A;
+            --chc-light-bg: #EBF2FA;
+            --chc-border: #1E3A8A;
+            --chc-text: #1E3A8A;
+            --chc-footer-bg: #F3F4F6;
+        }
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            color: var(--chc-text);
+            line-height: 1.5;
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f8fafc;
+        }
+        h1 {
+            color: var(--chc-navy);
+            text-align: center;
+            margin-bottom: 4px;
+            font-size: 24px;
+            font-weight: 800;
+        }
+        .subtitle-main {
+            text-align: center;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--chc-navy);
+            margin-bottom: 15px;
+        }
+        .download-bar {
+            text-align: center;
+            margin-bottom: 20px;
+            margin-top: 15px;
+        }
+        .action-download-btn {
+            background-color: var(--chc-navy);
+            color: #ffffff;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            transition: opacity 0.2s ease;
+        }
+        .action-download-btn:hover {
+            opacity: 0.9;
+        }
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+            background: #ffffff;
+            border: 2px solid var(--chc-border);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+        .section-box {
+            border: 1.5px solid var(--chc-border);
+            border-radius: 8px;
+            margin-bottom: 15px;
+            background-color: var(--chc-light-bg);
+            overflow: hidden;
+        }
+        .section-header {
+            background-color: var(--chc-navy);
+            color: #ffffff;
+            padding: 9px 14px;
+            font-size: 14px;
+            font-weight: 700;
+        }
+        .section-content {
+            padding: 15px 20px;
+            background-color: var(--chc-light-bg);
+            font-size: 13px;
+            color: var(--chc-text);
+        }
+        h3 {
+            color: var(--chc-navy);
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+            font-weight: 700;
+            font-size: 13px;
+        }
+        h3:first-of-type {
+            margin-top: 0;
+        }
+        ul, ol {
+            padding-left: 1.5rem;
+            margin-top: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+        li {
+            margin-bottom: 1rem;
+        }
+        li:last-child {
+            margin-bottom: 0;
+        }
+        ol li {
+            margin-bottom: 1rem;
+        }
+        p {
+            margin-bottom: 1rem;
+        }
+        p:last-child {
+            margin-bottom: 0;
+        }
+        .glossary-term {
+            font-weight: 700;
+            color: var(--chc-navy);
+        }
+        .inline-link {
+            color: var(--chc-navy);
+            font-weight: 600;
+            text-decoration: underline;
+        }
+        .inline-link:hover {
+            opacity: 0.8;
+        }
+        .next-steps-container {
+            border: 2px solid var(--chc-border);
+            background-color: var(--chc-footer-bg);
+            padding: 14px;
+            border-radius: 8px;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .next-steps-title {
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--chc-navy);
+            margin-bottom: 4px;
+            letter-spacing: 0.05em;
+        }
+        .next-steps-subtitle {
+            font-size: 12px;
+            font-style: italic;
+            color: #4b5563;
+            margin-bottom: 12px;
+        }
+        .button-grid {
+            display: flex;
+            gap: 12px;
+            justify-content: space-between;
+        }
+        @media (max-width: 600px) {
+            .button-grid {
+                flex-direction: column;
+            }
+        }
+        .chc-button {
+            flex: 1;
+            background-color: var(--chc-navy);
+            color: #ffffff;
+            border: none;
+            border-radius: 6px;
+            padding: 10px 12px;
+            text-align: center;
+            text-decoration: none;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            transition: opacity 0.2s ease;
+        }
+        .chc-button:hover {
+            opacity: 0.9;
+        }
+        .button-header {
+            font-size: 12px;
+            font-weight: 700;
+            margin-bottom: 3px;
+        }
+        .button-sub {
+            font-size: 10px;
+            font-weight: 400;
+            color: #cbd5e1;
+        }
+    </style>
+</head>
+<body>
+
+<h1>CHC Blueprint</h1>
+<div class="subtitle-main">Basic Guide</div>
+
+<div class="download-bar">
+    <button class="action-download-btn" onclick="downloadGuide()">📥 Download Basic Guide</button>
+</div>
+
+<div class="container">
+    <!-- Guide Section 1 -->
+    <div class="section-box">
+        <div class="section-header">1. Checklist</div>
+        <div class="section-content">
+            <p>We have given you this free checklist to help start claiming care fees. It lists every possible record that will help in the battle ahead.</p>
+            <p>Don't worry if you don't have everything. We can help you get everything quickly.</p>
+            
+            <h3>Couple of Quick Notes on the Checklist</h3>
+            <ul>
+                <li><strong>PAF:</strong> We have used this to mean <strong>P</strong>erson <strong>A</strong>dvocated <strong>F</strong>or. Simply, this means the person you’re claiming on behalf of. There were so many ways of referring to them, but all carried heavy emotional ties, so we thought this was best.</li>
+                <li><strong>Period of Claim:</strong> You’ll notice we’ve said that the period of claim can be decided later. This should be done <i>after</i> we’ve audited your records, as all the time they have been cared for may not qualify depending on what the notes contain.</li>
+                <li><strong>Authority to Act:</strong> This varies depending on whether the PAF is still alive or not. If they are, you’ll need to have Power of Attorney (either medical or financial, as both apply in this case). If they are sadly deceased, even if you had Power of Attorney while they were living, this is no longer valid. There are then two options:
+                    <ol>
+                        <li>You are the executor of the will. Just go ahead and do the claim.</li>
+                        <li>Another person is the executor, either family or a solicitor. In this case, you can ask them if you can make the claim for the benefit of the estate at no cost. You just get a <strong>Letter of Authority</strong> from them and then go ahead with the claim. This letter is in our template pack, meaning any money you recover goes back into the estate.</li>
+                    </ol>
+                </li>
+            </ul>
+            <p><em>Note: We do not need to see any copies of wills or paperwork surrounding this. You will just need them to send in with your claim.</em></p>
+        </div>
+    </div>
+
+    <!-- Guide Section 2 -->
+    <div class="section-box">
+        <div class="section-header">2. Why You Can & Should Claim</div>
+        <div class="section-content">
+            <p>NHS Continuing Healthcare (CHC) is a complete package of care funded entirely by the NHS for anyone over 18 with a 'primary health need'. Unlike social care through the council, CHC is completely free and never means-tested against life savings or property.</p>
+            
+            <h3>Stop Paying</h3>
+            <p>If your claim is for CHC and successful, the NHS steps in. The PAF stops paying care home fees, saving thousands of pounds every single month.</p>
+            
+            <h3>The Backstory</h3>
+            <p>Back in the 1990s, when the NHS sold off its care homes and long-stay geriatric hospitals, the state kept a strict legal duty and a ring-fenced national budget currently standing at around <strong>£6.5 billion a year</strong> to fund care driven by medical needs.</p>
+            
+            <h3>Don't Feel Guilty</h3>
+            <p>You aren't taking money away from local hospitals, doctors, or A&amp;E. This dedicated NHS budget is purely for health-based care. If they qualify, that money was always meant to cover their care. They are completely entitled to it.</p>
+        </div>
+    </div>
+
+    <!-- Guide Section 3 -->
+    <div class="section-box">
+        <div class="section-header">3. Understanding PUPoC</div>
+        <div class="section-content">
+            <p>PUPoC (Previously Unassessed Period of Care) means looking back at past care periods where the PAF should have been assessed for CHC, but the ICB never bothered. Families spot these hidden periods all the time when reading through old hospital notes or care home files. The NHS has a strict legal duty to investigate these retrospective claims properly, meaning if they should have paid for the care all along, they are required to pay it back.</p>
+            
+            <h3>What's It Worth?</h3>
+            <p>Because care home fees are typically £1,000 to £4,000+ per week, a successful PUPoC claim for past months or years frequently totals tens or hundreds of £1,000s in refunds.</p>
+
+            <div style="font-weight: bold; color: var(--chc-navy); margin-top: 15px; margin-bottom: 5px;">Crucial Date Cut-Off:</div>
+            <p style="margin-top: 0; margin-bottom: 10px;">
+                The absolute earliest date you can claim a refund for is <strong>1 April 2012</strong>. Because of an NHS cutoff rule, any periods of care before that date are officially closed off to standard claims. So if the PAF was in care anytime after this you can claim from the 1st day of care.
+            </p>
+            
+            <p style="margin-top: 15px; font-weight: 500;">Need Records? Grab our <a href="YOUR_TEMPLATE_LINK" class="inline-link">Template Pack (£29)</a> or get an <a href="YOUR_AUDIT_LINK" class="inline-link">Audit (£229)</a>.</p>
+        </div>
+    </div>
+
+    <!-- Guide Section: Mental Health Act & Section 117 -->
+    <div class="section-box">
+        <div class="section-header">Mental Health Act & Section 117 (Free Care Rules)</div>
+        <div class="section-content" style="font-size: 13px;">
+            <p style="margin-top: 0; margin-bottom: 10px;">
+                If PAF spent time locked up in hospital for mental health treatment (usually under Section 3 of the Mental Health Act), the law says they were entitled to free aftercare the moment they left.
+            </p>
+            <p style="margin-bottom: 10px;">
+                This means the NHS and council have to foot the entire bill. If they went straight from that hospital stay into a care home for mental health support, that funding is locked in for life, no time limits, and no means-testing allowed. Any care home fees paid out during that time were taken illegally, which means every single penny can be claimed back.
+            </p>
+            <p style="margin-bottom: 0; font-weight: 600; color: var(--chc-navy);">
+                Action Point: Dig through old medical files or social work notes for "Section 3" or "Section 117". Finding it is basically hitting the jackpot for a full refund.
+            </p>
+        </div>
+    </div>
+    
+    <!-- Guide Section 4 -->
+    <div class="section-box">
+        <div class="section-header">4. What They All Mean</div>
+        <div class="section-content">
+            <ul>
+                <li><span class="glossary-term">DST (Decision Support Tool):</span> The standardised assessment document used to record evidence across the key indicators.</li>
+                <li><span class="glossary-term">MDT (Multi-Disciplinary Team):</span> A group of health and social care professionals who jointly complete the assessment and make eligibility recommendations.</li>
+                <li><span class="glossary-term">ICB (Integrated Care Board):</span> The NHS statutory body responsible for commissioning healthcare services, evaluating CHC eligibility, and ultimately paying out.</li>
+                <li><span class="glossary-term">CHC (NHS Continuing Healthcare):</span> A fully funded package of health and social care provided free of charge by the NHS under the National Framework.</li>
+                <li><span class="glossary-term">PUPoC (Previously Unassessed Periods of Care):</span> Retrospective claims for historical care periods where no CHC assessment took place.</li>
+                <li><span class="glossary-term">SAR (Subject Access Request):</span> A formal legal request under UK data protection legislation to obtain historical records from healthcare providers and local authorities. Must be answered in 30 business days.</li>
+                <li><span class="glossary-term">AHRA (Access Health Records Act 1990):</span> A formal legal request under UK data protection legislation that gives specific people the legal right to view the health records of someone who has died. Must be answered in 40 business days.</li>
+                <li><span class="glossary-term">PSO (Public Service Ombudsman):</span> Formerly known as the PHSO, this is the final independent tier for unresolved complaints against NHS bodies.</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Bottom Next Steps Footer Box -->
+    <div class="next-steps-container">
+        <div class="next-steps-title">Ready to take the next step?</div>
+        <div class="next-steps-subtitle">Records missing? Your Template Pack is fully refunded against the Audit, so everyone pays the same.</div>
+        <div class="button-grid">
+            <a href="YOUR_TEMPLATE_LINK" class="chc-button">
+                <span class="button-header">Need Records?</span>
+                <span class="button-sub">Get Your Template Pack (£29)</span>
+            </a>
+            <a href="YOUR_AUDIT_LINK" class="chc-button">
+                <span class="button-header">Got Everything?</span>
+                <span class="button-sub">Get Your Audit (£229)</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Bottom Matching Centered Download Button -->
+    <div class="download-bar" style="margin-bottom: 0;">
+        <button class="action-download-btn" onclick="downloadGuide()">📥 Download Basic Guide</button>
+    </div>
+</div>
+
+<script>
+    function downloadGuide() {
+        const htmlContent = "<!DOCTYPE html>\n" + document.documentElement.outerHTML;
+        
+        const blob = new Blob([htmlContent], { type: 'text/html;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'chc-basic-guide.html';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    }
+</script>
+
+</body>
+</html>
