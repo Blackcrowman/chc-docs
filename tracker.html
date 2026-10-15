@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CHC Claim &amp; Correspondence Tracker - CHC Blueprint</title>
+    <!-- Inter Font Import -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --chc-navy: #1E3A8A;
+            --chc-light-bg: #EBF2FA;
+            --chc-border: #1E3A8A;
+            --chc-text: #1E3A8A;
+            --chc-footer-bg: #F3F4F6;
+        }
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            color: var(--chc-text);
+            line-height: 1.3;
+            max-width: 950px;
+            margin: 0 auto;
+            padding: 15px 20px;
+            background-color: #f8fafc;
+        }
+        h1 {
+            color: var(--chc-navy);
+            text-align: center;
+            margin-bottom: 2px;
+            font-size: 24px;
+            font-weight: 800;
+        }
+        .subtitle-main {
+            text-align: center;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--chc-navy);
+            margin-bottom: 16px;
+        }
+        .container {
+            max-width: 950px;
+            margin: 0 auto;
+            background: #ffffff;
+            border: 2px solid var(--chc-border);
+            border-radius: 10px;
+            padding: 12px 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+        .card {
+            border: 1.5px solid var(--chc-border);
+            border-radius: 8px;
+            background-color: var(--chc-light-bg);
+            margin-bottom: 12px;
+            overflow: hidden;
+        }
+        .card-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: #ffffff;
+            background-color: var(--chc-navy);
+            padding: 6px 10px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #ffffff;
+        }
+        th {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--chc-navy);
+            text-transform: uppercase;
+            padding: 5px 4px;
+            text-align: center;
+            border-bottom: 1.5px solid #d1d5db;
+            background-color: #f1f5f9;
+        }
+        th.col-item {
+            text-align: left;
+            padding-left: 10px;
+        }
+        th.col-check, td.col-check {
+            text-align: center;
+            width: 45px;
+        }
+        td {
+            padding: 4px 4px;
+            border-bottom: 1px solid #e2e8f0;
+            font-size: 13px;
+            color: var(--chc-text);
+            vertical-align: middle;
+            text-align: center;
+        }
+        td.col-item {
+            text-align: left;
+            padding-left: 10px;
+            font-weight: 600;
+        }
+        tr:last-child td {
+            border-bottom: none;
+        }
+        input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            accent-color: var(--chc-navy);
+            cursor: pointer;
+        }
+        .date-cell-wrapper {
+            display: flex;
+            align-items: center;
+            position: relative;
+            justify-content: center;
+        }
+        input.date-input {
+            width: 72px;
+            padding: 4px;
+            border: 1px solid #cbd5e1;
+            border-radius: 4px;
+            font-size: 13px;
+            font-family: inherit;
+            color: #1e293b;
+            background-color: #fff;
+            text-align: center;
+        }
+        input.date-input::placeholder {
+            color: #94a3b8;
+            opacity: 1;
+        }
+        input.date-input:focus {
+            outline: none;
+            border-color: var(--chc-navy);
+            box-shadow: 0 0 0 1px var(--chc-navy);
+        }
+        input.provider-input {
+            width: 100%;
+            padding: 4px 6px;
+            border: 1px solid #cbd5e1;
+            border-radius: 4px;
+            font-size: 13px;
+            font-family: inherit;
+            font-weight: 600;
+            color: #1e293b;
+            background-color: #fff;
+        }
+        input.provider-input::placeholder {
+            color: #94a3b8;
+            font-weight: 400;
+            opacity: 1;
+        }
+        input.provider-input:focus {
+            outline: none;
+            border-color: var(--chc-navy);
+            box-shadow: 0 0 0 1px var(--chc-navy);
+        }
+        .cal-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0 2px;
+            margin-left: 3px;
+            display: flex;
+            align-items: center;
+            color: #64748b;
+        }
+        .cal-btn:hover {
+            color: var(--chc-navy);
+        }
+        .cal-btn svg {
+            width: 14px;
+            height: 14px;
+            fill: currentColor;
+        }
+        .hidden-date {
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
+            width: 0;
+            height: 0;
+        }
+        .next-steps-container {
+            border: 2px solid var(--chc-border);
+            background-color: var(--chc-footer-bg);
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 15px;
+            margin-bottom: 12px;
+            text-align: center;
+        }
+        .next-steps-title {
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--chc-navy);
+            margin-bottom: 4px;
+            letter-spacing: 0.05em;
+        }
+        .next-steps-subtitle {
+            font-size: 12px;
+            font-style: italic;
+            color: #4b5563;
+            margin-bottom: 10px;
+        }
+        .btn-single {
+            display: block;
+            background-color: var(--chc-navy);
+            color: #ffffff;
+            text-decoration: none;
+            padding: 8px 14px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 700;
+            text-align: center;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            max-width: 380px;
+            margin: 0 auto;
+            transition: opacity 0.2s ease;
+        }
+        .btn-single:hover {
+            opacity: 0.9;
+        }
+        .btn-single span {
+            display: block;
+            font-size: 10px;
+            font-weight: 400;
+            color: #cbd5e1;
+            margin-top: 2px;
+        }
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 6px;
+            font-size: 12px;
+            color: #64748b;
+        }
+        .reset-btn {
+            background: none;
+            border: 1px solid #cbd5e1;
+            color: #64748b;
+            padding: 3px 6px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        .reset-btn:hover {
+            background: #fee2e2;
+            color: #991b1b;
+            border-color: #fca5a5;
+        }
+    </style>
+</head>
+<body>
+
+<h1>CHC Blueprint</h1>
+<div class="subtitle-main">Correspondence Tracker</div>
+
+<div class="container">
+    <!-- Box 3 (Part 1) Core Providers -->
+    <div class="card">
+        <div class="card-title">Core Providers</div>
+        <table>
+            <thead>
+                <tr>
+                    <th class="col-item" style="width: 32%;">Record Type</th>
+                    <th style="width: 13%;">Date Sent</th>
+                    <th style="width: 13%;">Due Date</th>
+                    <th style="width: 13%;">Chaser Sent</th>
+                    <th style="width: 13%;">Chaser Due</th>
+                    <th class="col-check" style="width: 16%;">Got It</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="col-item">GP Practice Manager</td>
+                    <td><div class="date-cell-wrapper"><input type="text" class="date-input" placeholder="DD/MM" maxlength="5"><button type="button" class="cal-btn" tabindex="-1" title="Select date"><svg viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zM9 14H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2zm-8 4H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2z"/></svg></button><input type="date" class="hidden-date" tabindex="-1"></div></td>
+                    <td><div class="date-cell-wrapper"><input type="text" class="date-input" placeholder="DD/MM" maxlength="5"><button type="button" class="cal-btn" tabindex="-1" title="Select date"><svg viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zM9 14H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2zm-8 4H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2z"/></svg></button><input type="date" class="hidden-date" tabindex="-1"></div></td>
+                    <td><div class="date-cell-wrapper"><input type="text" class="date-input" placeholder="DD/MM" maxlength="5"><button type="button" class="cal-btn" tabindex="-1" title="Select date"><svg viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zM9 14H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2zm-8 4H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2z"/></svg></button><input type="date" class="hidden-date" tabindex="-1"></div></td>
+                    <td><div class="date-cell-wrapper"><input type="text" class="date-input" placeholder="DD/MM" maxlength="5"><button type="button" class="cal-btn" tabindex="-1" title="Select date"><svg viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zM9 14H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2zm-8 4H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2z"/></svg></button><input type="date" class="hidden-date" tabindex="-1"></div></td>
+                    <td class="col-check"><input type="checkbox" id="trk_1"></td>
+                </tr>
+                <tr>
+                    <td class="col-item">Local Authority / Social Services</td>
+                    <td><div class="date-cell-wrapper"><input type="text" class="date-input" placeholder="DD/MM" maxlength="5"><button type="button" class="cal-btn" tabindex="-1" title="Select date"><svg viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zM9 14H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2zm-8 4H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2z"/></svg></button><input type="date" class="hidden-date" tabindex="-1"></div></td>
+                    <td><div class="date-cell-wrapper"><input type="text" class="date-input" placeholder="DD/MM" maxlength="5"><button type="button" class="cal-btn" tabindex="-1" title="Select date"><svg viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zM9 14H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2zm-8 4H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2z"/></svg></button><input type="date" class="hidden-date" tabindex="-1"></div></td>
+                    <td><div class="date-cell-wrapper"><input type="text" class="date-input" placeholder="DD/MM" maxlength="5"><button type="button" class="cal-btn" tabindex="-1" title="Select date"><svg viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zM9 14H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2zm-8 4H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2z"/></svg></button><input type="date" class="hidden-date" tabindex="-1"></div></td>
+                    <td><div class="date-cell-wrapper"><input type="text" class="date-input" placeholder="DD/MM" maxlength="5"><button type="button" class="cal-btn" tabindex="-1" title="Select date"><svg viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zM9 14H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2zm-8 4H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2z"/></svg></button><input type="date" class="hidden-date" tabindex="-1"></div></td>
+                    <td class="col-check"><input type="checkbox" id="trk_2"></td>
+                </tr>
+                <tr>
+                    <td class="col-item">Care Home Manager / Care Agency</td>
+                    <td><div class="date-cell-wrapper"><input type="text" class="date-input" placeholder="DD/MM" maxlength="5"><button type="button" class="cal-btn" tabindex="-1" title="Select date"><svg viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zM9 14H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2zm-8 4H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2z"/></svg></button><input type="date" class="hidden-date" tabindex="-1"></div></td>
+                    <td><div class="date-cell-wrapper"><input type="text" class="date-input" placeholder="DD/MM" maxlength="5"><button type="button" class="cal-btn" tabindex="-1" title="Select date"><svg viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zM9 14H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2zm-8 4H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2z"/></svg></button><input type="date" class="hidden-date" tabindex="-1"></div></td>
+                    <td><div class="date-cell-wrapper"><input type="text" class="date-input" placeholder="DD/MM" maxlength="5"><button type="button" class="cal-btn" tabindex="-1" title="Select date"><svg viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zM9 14H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2zm-8 4H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2z"/></svg></button><input type="date" class="hidden-date" tabindex="-1"></div></td>
+                    <td><div class="date-cell-wrapper"><input type="text" class="date-input" placeholder="DD/MM" maxlength="5"><button type="button" class="cal-btn" tabindex="-1" title="Select date"><svg viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zM9 14H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2zm-8 4H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2z"/></svg></button><input type="date" class="hidden-date" tabindex="-1"></div></td>
+                    <td class="col-check"><input type="checkbox" id="trk_3"></td>
+                </tr>
+                <tr>
+                    <td class="col-item">Community Health / District Nursing</td>
+                    <td><div class="date-cell-wrapper"><input type="text" class="date-input" placeholder="DD/MM" maxlength="5"><button type="button" class="cal-btn" tabindex="-1" title="Select date"><svg viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zM9 14H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2zm-8 4H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2z"/></svg></button><input type="date" class="hidden-date" tabindex="-1"></div></td>
+                    <td><div class="date-cell-wrapper"><input type="text" class="date-input" placeholder="DD/MM" maxlength="5"><button type="button" class="cal-btn" tabindex="-1" title="Select date"><svg viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zM9 14H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2zm-8 4H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2z"/></svg></button><input type="date" class="hidden-date" tabindex="-1"></div></td>
+                    <td><div class="date-cell-wrapper"><input type="text" class="date-input" placeholder="DD/MM" maxlength="5"><button type="button" class="cal-btn" tabindex="-1" title="Select date"><svg viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zM9 14H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2zm-8 4H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2z"/></svg></button><input type="date" class="hidden-date" tabindex="-1"></div></td>
+                    <td><div class="date-cell-wrapper"><input type="text" class="date-input" placeholder="DD/MM" maxlength="5"><button type="button" class="cal-btn" tabindex="-1" title="Select date"><svg viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zM9 14H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2zm-8 4H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2z"/></svg></button><input type="date" class="hidden-date" tabindex="-1"></div></td>
+                    <td class="col-check"><input type="checkbox" id="trk_4"></td>
+                </tr>
+                <tr>
+                    <td class="col-item">Integrated Care Board</td>
+                    <td><div class="date-cell-wrapper"><input type="text" class="date-input" placeholder="DD/MM" maxlength="5"><button type="button" class="cal-btn" tabindex="-1" title="Select date"><svg viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zM9 14H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2zm-8 4H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2z"/></svg></button><input type="date" class="hidden-date" tabindex="-1"></div></td>
+                    <td><div class="date-cell-wrapper"><input type="text" class="date-input" placeholder="DD/MM" maxlength="5"><button type="button" class="cal-btn" tabindex="-1" title="Select date"><svg viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zM9 14H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2zm-8 4H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2z"/></svg></button><input type="date" class="hidden-date" tabindex="-1"></div></td>
+                    <td><div class="date-cell-wrapper"><input type="text" class="date-input" placeholder="DD/MM" maxlength="5"><button type="button" class="cal-btn" tabindex="-1" title="Select date"><svg viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zM9 14H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2zm-8 4H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2z"/></svg></button><input type="date" class="hidden-date" tabindex="-1"></div></td>
+                    <td><div class="date-cell-wrapper"><input type="text" class="date-input" placeholder="DD/MM" maxlength="5"><button type="button" class="cal-btn" tabindex="-1" title="Select date"><svg viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zM9 14H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2zm-8 4H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2z"/></svg></button><input type="date" class="hidden-date" tabindex="-1"></div></td>
+                    <td class="col-check"><input type="checkbox" id="trk_5"></td>
+                </tr>
+                <tr>
+                    <td class="col-item">Hospital Inpatient &amp; Outpatient Services</td>
+                    <td><div class="date-cell-wrapper"><input type="text" class="date-input" placeholder="DD/MM" maxlength="5"><button type="button" class="cal-btn" tabindex="-1" title="Select date"><svg viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zM9 14H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2zm-8 4H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2z"/></svg></button><input type="date" class="hidden-date" tabindex="-1"></div></td>
+                    <td><div class="date-cell-wrapper"><input type="text" class="date-input" placeholder="DD/MM" maxlength="5"><button type="button" class="cal-btn" tabindex="-1" title="Select date"><svg viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zM9 14H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2zm-8 4H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2z"/></svg></button><input type="date" class="hidden-date" tabindex="-1"></div></td>
+                    <td><div class="date-cell-wrapper"><input type="text" class="date-input" placeholder="DD/MM" maxlength="5"><button type="button" class="cal-btn" tabindex="-1" title="Select date"><svg viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zM9 14H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2zm-8 4H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2z"/></svg></button><input type="date" class="hidden-date" tabindex="-1"></div></td>
+                    <td><div class="date-cell-wrapper"><input type="text" class="date-input" placeholder="DD/MM" maxlength="5"><button type="button" class="cal-btn" tabindex="-1" title="Select date"><svg viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zM9 14H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2zm-8 4H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2z"/></svg></button><input type="date" class="hidden-date" tabindex="-1"></div></td>
+                    <td class="col-check"><input type="checkbox" id="trk_6"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Additional / Specialist Providers (Flexible) -->
+    <div class="card">
+        <div class="card-title">Specialist Providers (Fill in box if required)</div>
+        <table>
+            <thead>
+                <tr>
+                    <th class="col-item" style="width: 32%;">Record Type / Provider Name</th>
+                    <th style="width: 13%;">Date Sent</th>
+                    <th style="width: 13%;">Due Date</th>
+                    <th style="width: 13%;">Chaser Sent</th>
+                    <th style="width: 13%;">Chaser Due</th>
+                    <th class="col-check" style="width: 16%;">Got It</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="col-item"><input type="text" class="provider-input" id="prov_1" placeholder="e.g. Mental Health Trust / Hospice"></td>
+                    <td><div class="date-cell-wrapper"><input type="text" class="date-input" placeholder="DD/MM" maxlength="5"><button type="button" class="cal-btn" tabindex="-1" title="Select date"><svg viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zM9 14H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2zm-8 4H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2z"/></svg></button><input type="date" class="hidden-date" tabindex="-1"></div></td>
+                    <td><div class="date-cell-wrapper"><input type="text" class="date-input" placeholder="DD/MM" maxlength="5"><button type="button" class="cal-btn" tabindex="-1" title="Select date"><svg viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zM9 14H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2zm-8 4H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2z"/></svg></button><input type="date" class="hidden-date" tabindex="-1"></div></td>
+                    <td><div class="date-cell-wrapper"><input type="text" class="date-input" placeholder="DD/MM" maxlength="5"><button type="button" class="cal-btn" tabindex="-1" title="Select date"><svg viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zM9 14H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2zm-8 4H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2z"/></svg></button><input type="date" class="hidden-date" tabindex="-1"></div></td>
+                    <td><div class="date-cell-wrapper"><input type="text" class="date-input" placeholder="DD/MM" maxlength="5"><button type="button" class="cal-btn" tabindex="-1" title="Select date"><svg viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zM9 14H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2zm-8 4H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2z"/></svg></button><input type="date" class="hidden-date" tabindex="-1"></div></td>
+                    <td class="col-check"><input type="checkbox" id="trk_7"></td>
+                </tr>
+                <tr>
+                    <td class="col-item"><input type="text" class="provider-input" id="prov_2" placeholder="e.g. Memory Clinic / Ambulance Trust"></td>
+                    <td><div class="date-cell-wrapper"><input type="text" class="date-input" placeholder="DD/MM" maxlength="5"><button type="button" class="cal-btn" tabindex="-1" title="Select date"><svg viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zM9 14H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2zm-8 4H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2z"/></svg></button><input type="date" class="hidden-date" tabindex="-1"></div></td>
+                    <td><div class="date-cell-wrapper"><input type="text" class="date-input" placeholder="DD/MM" maxlength="5"><button type="button" class="cal-btn" tabindex="-1" title="Select date"><svg viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zM9 14H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2zm-8 4H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2z"/></svg></button><input type="date" class="hidden-date" tabindex="-1"></div></td>
+                    <td><div class="date-cell-wrapper"><input type="text" class="date-input" placeholder="DD/MM" maxlength="5"><button type="button" class="cal-btn" tabindex="-1" title="Select date"><svg viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zM9 14H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2zm-8 4H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2z"/></svg></button><input type="date" class="hidden-date" tabindex="-1"></div></td>
+                    <td><div class="date-cell-wrapper"><input type="text" class="date-input" placeholder="DD/MM" maxlength="5"><button type="button" class="cal-btn" tabindex="-1" title="Select date"><svg viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zM9 14H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2zm-8 4H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2z"/></svg></button><input type="date" class="hidden-date" tabindex="-1"></div></td>
+                    <td class="col-check"><input type="checkbox" id="trk_8"></td>
+                </tr>
+                <tr>
+                    <td class="col-item"><input type="text" class="provider-input" id="prov_3" placeholder="e.g. Dental / Optometry Provider"></td>
+                    <td><div class="date-cell-wrapper"><input type="text" class="date-input" placeholder="DD/MM" maxlength="5"><button type="button" class="cal-btn" tabindex="-1" title="Select date"><svg viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zM9 14H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2zm-8 4H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2z"/></svg></button><input type="date" class="hidden-date" tabindex="-1"></div></td>
+                    <td><div class="date-cell-wrapper"><input type="text" class="date-input" placeholder="DD/MM" maxlength="5"><button type="button" class="cal-btn" tabindex="-1" title="Select date"><svg viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zM9 14H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2zm-8 4H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2z"/></svg></button><input type="date" class="hidden-date" tabindex="-1"></div></td>
+                    <td><div class="date-cell-wrapper"><input type="text" class="date-input" placeholder="DD/MM" maxlength="5"><button type="button" class="cal-btn" tabindex="-1" title="Select date"><svg viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zM9 14H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2zm-8 4H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2z"/></svg></button><input type="date" class="hidden-date" tabindex="-1"></div></td>
+                    <td><div class="date-cell-wrapper"><input type="text" class="date-input" placeholder="DD/MM" maxlength="5"><button type="button" class="cal-btn" tabindex="-1" title="Select date"><svg viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zM9 14H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2zm-8 4H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2z"/></svg></button><input type="date" class="hidden-date" tabindex="-1"></div></td>
+                    <td class="col-check"><input type="checkbox" id="trk_9"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Next Steps Footer Box -->
+    <div class="next-steps-container">
+        <div class="next-steps-title">Ready to take the next step?</div>
+        <div class="next-steps-subtitle">Don't forget to claim your £29 Template Pack refund against your audit.</div>
+        <a href="YOUR_AUDIT_LINK" class="btn-single">
+            Got Everything?<br/>
+            <span>Get Your Audit (£229)</span>
+        </a>
+    </div>
+
+    <div class="controls">
+        <span>🔒 Progress saves automatically on your computer.</span>
+        <button class="reset-btn" onclick="resetTracker()">Reset Tracker</button>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        // Handle provider name inputs storage
+        const providerInputs = document.querySelectorAll('input.provider-input');
+        providerInputs.forEach(prov => {
+            const savedProv = localStorage.getItem(prov.id) || sessionStorage.getItem(prov.id);
+            if (savedProv !== null) {
+                prov.value = savedProv;
+            }
+            prov.addEventListener("input", () => {
+                try {
+                    localStorage.setItem(prov.id, prov.value);
+                } catch (e) {
+                    sessionStorage.setItem(prov.id, prov.value);
+                }
+            });
+        });
+
+        // Handle checkboxes
+        const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+        checkboxes.forEach(chk => {
+            const savedState = localStorage.getItem(chk.id) || sessionStorage.getItem(chk.id);
+            if (savedState === "true") {
+                chk.checked = true;
+            }
+            chk.addEventListener("change", () => {
+                try {
+                    localStorage.setItem(chk.id, chk.checked);
+                } catch (e) {
+                    sessionStorage.setItem(chk.id, chk.checked);
+                }
+            });
+        });
+
+        // Handle date inputs, validation, formatting, auto-advance, and calendar picker
+        const wrappers = document.querySelectorAll('.date-cell-wrapper');
+        const inputs = document.querySelectorAll('input.date-input');
+
+        inputs.forEach((input, index) => {
+            const inputKey = "tracker_date_" + index;
+            const savedVal = localStorage.getItem(inputKey) || sessionStorage.getItem(inputKey);
+            if (savedVal !== null) {
+                input.value = savedVal;
+            }
+
+            // Force cursor to position 0 immediately on focus or click
+            const forceStart = () => {
+                requestAnimationFrame(() => {
+                    input.setSelectionRange(0, 0);
+                });
+            };
+            input.addEventListener("focus", forceStart);
+            input.addEventListener("click", forceStart);
+
+            const wrapper = wrappers[index];
+            const calBtn = wrapper.querySelector('.cal-btn');
+            const hiddenDate = wrapper.querySelector('.hidden-date');
+
+            // Calendar button trigger
+            calBtn.addEventListener("click", () => {
+                if (typeof hiddenDate.showPicker === 'function') {
+                    hiddenDate.showPicker();
+                } else {
+                    hiddenDate.click();
+                }
+            });
+
+            // When native calendar selects a date (YYYY-MM-DD), convert to DD/MM
+            hiddenDate.addEventListener("change", () => {
+                if (hiddenDate.value) {
+                    const parts = hiddenDate.value.split("-"); // [YYYY, MM, DD]
+                    if (parts.length === 3) {
+                        const formatted = parts[2] + "/" + parts[1];
+                        input.value = formatted;
+                        saveAndAdvance(input, formatted, index);
+                    }
+                }
+            });
+
+            // Handle Enter keypress to jump down vertically
+            input.addEventListener("keydown", (e) => {
+                if (e.key === "Enter") {
+                    e.preventDefault();
+                    const allInputs = document.querySelectorAll('input.date-input');
+                    const nextInput = allInputs[index + 4];
+                    if (nextInput) {
+                        nextInput.focus();
+                        nextInput.setSelectionRange(0, 0);
+                    }
+                }
+            });
+
+            input.addEventListener("input", () => {
+                let val = input.value.replace(/\D/g, "");
+                if (val.length > 4) {
+                    val = val.slice(0, 4);
+                }
+
+                // Validate Day (max 31)
+                if (val.length >= 2) {
+                    let dd = parseInt(val.slice(0, 2), 10);
+                    if (dd > 31) dd = 31;
+                    if (dd < 1) dd = 1;
+                    val = String(dd).padStart(2, '0') + val.slice(2);
+                }
+
+                // Validate Month (max 12)
+                if (val.length >= 4) {
+                    let mm = parseInt(val.slice(2, 4), 10);
+                    if (mm > 12) mm = 12;
+                    if (mm < 1) mm = 1;
+                    val = val.slice(0, 2) + String(mm).padStart(2, '0');
+                }
+
+                let formatted = "";
+                if (val.length > 0) {
+                    formatted += val.slice(0, 2);
+                }
+                if (val.length >= 3) {
+                    formatted += "/" + val.slice(2, 4);
+                }
+                input.value = formatted;
+
+                saveAndAdvance(input, formatted, index);
+            });
+        });
+
+        function saveAndAdvance(input, formatted, index) {
+            const inputKey = "tracker_date_" + index;
+            try {
+                localStorage.setItem(inputKey, formatted);
+            } catch (e) {
+                sessionStorage.setItem(inputKey, formatted);
+            }
+
+            // Auto-advance vertically down to the next row in the same column (4 columns per row)
+            if (formatted.length === 5) {
+                setTimeout(() => {
+                    const allInputs = document.querySelectorAll('input.date-input');
+                    const nextInput = allInputs[index + 4];
+                    if (nextInput) {
+                        nextInput.focus();
+                        nextInput.setSelectionRange(0, 0);
+                    }
+                }, 10);
+            }
+        }
+
+        // Explicitly focus the first date input cleanly on load
+        const firstInput = document.querySelector('input.date-input');
+        if (firstInput) {
+            firstInput.focus();
+            firstInput.setSelectionRange(0, 0);
+        }
+    });
+
+    function resetTracker() {
+        if (confirm("Are you sure you want to clear all provider names, dates and checkboxes?")) {
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            checkboxes.forEach(chk => {
+                chk.checked = false;
+                localStorage.removeItem(chk.id);
+                sessionStorage.removeItem(chk.id);
+            });
+            const providerInputs = document.querySelectorAll('input.provider-input');
+            providerInputs.forEach(prov => {
+                prov.value = "";
+                localStorage.removeItem(prov.id);
+                sessionStorage.removeItem(prov.id);
+            });
+            const inputs = document.querySelectorAll('input.date-input');
+            inputs.forEach((input, index) => {
+                input.value = "";
+                const inputKey = "tracker_date_" + index;
+                localStorage.removeItem(inputKey);
+                sessionStorage.removeItem(inputKey);
+            });
+
+            // Re-focus the first input after reset
+            const firstInput = document.querySelector('input.date-input');
+            if (firstInput) {
+                firstInput.focus();
+                firstInput.setSelectionRange(0, 0);
+            }
+        }
+    }
+</script>
+
+</body>
+</html>
