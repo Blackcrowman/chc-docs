@@ -1,229 +1,328 @@
 <!DOCTYPE html>
 <html lang="en-GB">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NHS CHC Claim Checklist - CHC Blueprint</title>
-    <!-- Inter Font Import -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --chc-navy: #1E3A8A;
-            --chc-light-bg: #EBF2FA;
-            --chc-border: #1E3A8A;
-            --chc-text: #1E3A8A;
-            --chc-footer-bg: #F3F4F6;
-        }
-        *, *::before, *::after {
-            box-sizing: border-box;
-        }
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            color: var(--chc-text);
-            line-height: 1.5;
-            max-width: 700px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #f8fafc;
-        }
-        h1 {
-            color: var(--chc-navy);
-            text-align: center;
-            margin-bottom: 4px;
-            font-size: 24px;
-            font-weight: 800;
-        }
-        .subtitle-main {
-            text-align: center;
-            font-size: 14px;
-            font-weight: 600;
-            color: var(--chc-navy);
-            margin-bottom: 15px;
-        }
-        .download-bar {
-            text-align: center;
-            margin-bottom: 20px;
-            margin-top: 15px;
-        }
-        .action-download-btn {
-            background-color: var(--chc-navy);
-            color: #ffffff;
-            border: none;
-            padding: 10px 16px;
-            border-radius: 6px;
-            font-size: 13px;
-            font-weight: 700;
-            cursor: pointer;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-            transition: opacity 0.2s ease;
-        }
-        .action-download-btn:hover {
-            opacity: 0.9;
-        }
-        .container {
-            max-width: 700px;
-            margin: 0 auto;
-            background: #ffffff;
-            border: 2px solid var(--chc-border);
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-        }
-        .card {
-            border: 1.5px solid var(--chc-border);
-            border-radius: 8px;
-            background-color: var(--chc-light-bg);
-            margin-bottom: 15px;
-            overflow: hidden;
-        }
-        .card-title {
-            font-size: 14px;
-            font-weight: 700;
-            color: #ffffff;
-            background-color: var(--chc-navy);
-            padding: 9px 14px;
-        }
-        .card-subtitle {
-            font-size: 12px;
-            color: var(--chc-navy);
-            padding: 6px 14px;
-            font-style: italic;
-            border-bottom: 1px solid #d1d5db;
-            background-color: var(--chc-light-bg);
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            background-color: #ffffff;
-        }
-        th {
-            font-size: 12px;
-            font-weight: 700;
-            color: var(--chc-navy);
-            text-transform: uppercase;
-            padding: 8px 14px;
-            text-align: left;
-            border-bottom: 1.5px solid #d1d5db;
-            background-color: #f1f5f9;
-        }
-        th.col-check, td.col-check {
-            text-align: center;
-            width: 85px;
-            white-space: nowrap;
-        }
-        td {
-            padding: 10px 14px;
-            border-bottom: 1px solid #e2e8f0;
-            font-size: 13px;
-            color: var(--chc-text);
-            vertical-align: middle;
-        }
-        tr:last-child td {
-            border-bottom: none;
-        }
-        .sub-item {
-            padding-left: 24px;
-            font-size: 12.5px;
-        }
-        .header-row {
-            background-color: #dbeafe !important;
-            font-weight: 600;
-        }
-        input[type="checkbox"] {
-            width: 18px;
-            height: 18px;
-            accent-color: var(--chc-navy);
-            cursor: pointer;
-        }
-        .next-steps-container {
-            border: 2px solid var(--chc-border);
-            background-color: var(--chc-footer-bg);
-            padding: 14px;
-            border-radius: 8px;
-            margin-top: 20px;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-        .next-steps-title {
-            font-size: 12px;
-            font-weight: 700;
-            text-transform: uppercase;
-            color: var(--chc-navy);
-            margin-bottom: 4px;
-            letter-spacing: 0.05em;
-        }
-        .next-steps-subtitle {
-            font-size: 12px;
-            font-style: italic;
-            color: #4b5563;
-            margin-bottom: 12px;
-        }
-        .button-grid {
-            display: flex;
-            gap: 12px;
-            justify-content: space-between;
-        }
-        @media (max-width: 600px) {
-            .button-grid {
-                flex-direction: column;
-            }
-        }
-        .chc-button {
-            flex: 1;
-            background-color: var(--chc-navy);
-            color: #ffffff;
-            border: none;
-            border-radius: 6px;
-            padding: 10px 12px;
-            text-align: center;
-            text-decoration: none;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-            transition: opacity 0.2s ease;
-        }
-        .chc-button:hover {
-            opacity: 0.9;
-        }
-        .button-header {
-            font-size: 12px;
-            font-weight: 700;
-            margin-bottom: 3px;
-        }
-        .button-sub {
-            font-size: 10px;
-            font-weight: 400;
-            color: #cbd5e1;
-        }
-        .controls {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 15px;
-            margin-bottom: 20px;
-            font-size: 12px;
-            color: #64748b;
-        }
-        .reset-btn {
-            background: none;
-            border: 1px solid #cbd5e1;
-            color: #64748b;
-            padding: 6px 10px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 12px;
-        }
-        .reset-btn:hover {
-            background: #fee2e2;
-            color: #991b1b;
-            border-color: #fca5a5;
-        }
-    </style>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>NHS CHC Claim Checklist - CHC Blueprint</title>
+ <style>
+ :root {
+ --chc-navy: #1E3A8A;
+ --chc-green: #188038;
+ --chc-light-bg: #EBF2FA;
+ --chc-border: #1E3A8A;
+ --chc-slate-dark: #1E293B;
+ --chc-slate-body: #334155;
+ --chc-footer-bg: #F3F4F6;
+ }
+ *, *::before, *::after {
+ box-sizing: border-box;
+ }
+ body {
+ font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+ color: var(--chc-slate-dark);
+ line-height: 1.45;
+ max-width: 860px;
+ margin: 0 auto;
+ padding: 20px 20px 32px 20px;
+ background-color: #f8fafc;
+ -webkit-font-smoothing: antialiased;
+ }
+ h1 {
+ color: var(--chc-navy);
+ text-align: center;
+ margin: 0 0 4px 0;
+ font-size: 28px;
+ font-weight: 800;
+ }
+ .subtitle-main {
+ text-align: center;
+ font-size: 16px;
+ font-weight: 600;
+ color: var(--chc-navy);
+ margin-bottom: 16px;
+ }
+ .download-bar {
+ text-align: center;
+ margin-bottom: 20px;
+ margin-top: 15px;
+ }
+ .action-download-btn {
+ background-color: var(--chc-navy);
+ color: #ffffff;
+ border: none;
+ padding: 11px 18px;
+ border-radius: 6px;
+ font-size: 15px;
+ font-weight: 700;
+ font-family: inherit;
+ cursor: pointer;
+ box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+ transition: opacity 0.2s ease;
+ }
+ .action-download-btn:hover {
+ opacity: 0.92;
+ }
+ .container {
+ max-width: 860px;
+ margin: 0 auto;
+ background: #ffffff;
+ border: 2px solid var(--chc-border);
+ border-radius: 10px;
+ padding: 22px;
+ box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+ }
+ .card {
+ border: 1.5px solid var(--chc-border);
+ border-radius: 8px;
+ background-color: var(--chc-light-bg);
+ margin-bottom: 18px;
+ overflow: hidden;
+ }
+ .card-title {
+ font-size: 17px;
+ font-weight: 700;
+ color: #ffffff;
+ background-color: var(--chc-navy);
+ padding: 10px 16px;
+ }
+ .card-subtitle {
+ font-size: 14.5px;
+ color: var(--chc-slate-body);
+ padding: 8px 16px;
+ font-style: italic;
+ border-bottom: 1px solid #d1d5db;
+ background-color: var(--chc-light-bg);
+ }
+ table {
+ width: 100%;
+ border-collapse: collapse;
+ background-color: #ffffff;
+ }
+ th {
+ font-size: 13px;
+ font-weight: 700;
+ color: var(--chc-navy);
+ text-transform: uppercase;
+ letter-spacing: 0.03em;
+ padding: 9px 16px;
+ text-align: left;
+ border-bottom: 1.5px solid #d1d5db;
+ background-color: #f1f5f9;
+ }
+ th.col-check, td.col-check {
+ text-align: center;
+ width: 95px;
+ white-space: nowrap;
+ }
+ td {
+ padding: 12px 16px;
+ border-bottom: 1px solid #e2e8f0;
+ font-size: 16px;
+ color: var(--chc-slate-dark);
+ vertical-align: middle;
+ }
+ td strong {
+ color: var(--chc-navy);
+ }
+ tr:last-child td {
+ border-bottom: none;
+ }
+ .sub-item {
+ padding-left: 26px;
+ font-size: 16px;
+ color: var(--chc-slate-dark);
+ }
+ .sub-details {
+ font-size: 14.5px;
+ color: var(--chc-slate-body);
+ margin-top: 4px;
+ line-height: 1.45;
+ }
+ .header-row {
+ background-color: #dbeafe !important;
+ font-weight: 600;
+ }
+ input[type="checkbox"] {
+ width: 19px;
+ height: 19px;
+ accent-color: var(--chc-navy);
+ cursor: pointer;
+ vertical-align: middle;
+ }
+ .data-input-table td {
+ padding: 10px 16px;
+ }
+ .data-input-field {
+ width: 100%;
+ padding: 8px 10px;
+ border: 1px solid #cbd5e1;
+ border-radius: 5px;
+ font-family: inherit;
+ font-size: 16px;
+ color: var(--chc-slate-dark);
+ background-color: #ffffff;
+ }
+ .data-input-field::placeholder {
+ color: #94a3b8;
+ opacity: 1;
+ }
+ input[type="date"].data-input-field {
+ cursor: pointer;
+ }
+ .data-input-field:focus {
+ outline: none;
+ border-color: var(--chc-navy);
+ box-shadow: 0 0 0 2px rgba(30, 58, 138, 0.2);
+ }
+ textarea.data-input-field {
+ resize: vertical;
+ height: 64px;
+ }
+ .date-range-wrapper {
+ display: flex;
+ gap: 16px;
+ align-items: stretch;
+ }
+ .date-field-group {
+ flex: 1;
+ display: flex;
+ flex-direction: column;
+ justify-content: space-between;
+ text-align: center;
+ }
+ .date-field-label {
+ font-size: 14px;
+ color: var(--chc-slate-body);
+ font-weight: 600;
+ text-align: center;
+ line-height: 1.35;
+ min-height: 38px;
+ display: flex;
+ flex-direction: column;
+ justify-content: center;
+ align-items: center;
+ margin-bottom: 4px;
+ }
+ .amber-callout {
+ border: 2px solid #d97706;
+ background-color: #fffbeb;
+ color: #78350f;
+ border-radius: 8px;
+ padding: 14px 16px;
+ margin-top: 18px;
+ margin-bottom: 18px;
+ font-size: 16px;
+ line-height: 1.55;
+ }
+ .amber-callout-title {
+ font-weight: 700;
+ color: #92400e;
+ margin-bottom: 4px;
+ font-size: 16px;
+ }
+ .next-steps-container {
+ border: 2px solid var(--chc-border);
+ background-color: var(--chc-footer-bg);
+ padding: 16px;
+ border-radius: 8px;
+ margin-top: 18px;
+ margin-bottom: 18px;
+ text-align: center;
+ }
+ .next-steps-title {
+ font-size: 15px;
+ font-weight: 700;
+ text-transform: uppercase;
+ color: var(--chc-navy);
+ margin-bottom: 4px;
+ letter-spacing: 0.05em;
+ }
+ .next-steps-subtitle {
+ font-size: 15px;
+ font-style: italic;
+ color: var(--chc-slate-body);
+ margin-bottom: 14px;
+ }
+ .button-grid {
+ display: flex;
+ gap: 14px;
+ justify-content: space-between;
+ }
+ @media (max-width: 640px) {
+ .button-grid {
+ flex-direction: column;
+ }
+ .date-range-wrapper {
+ flex-direction: column;
+ gap: 12px;
+ }
+ .date-field-label {
+ min-height: auto;
+ }
+ }
+ .chc-button {
+ flex: 1;
+ background-color: var(--chc-green);
+ color: #ffffff;
+ border: none;
+ border-radius: 6px;
+ padding: 13px 16px;
+ text-align: center;
+ text-decoration: none;
+ display: flex;
+ flex-direction: column;
+ justify-content: center;
+ align-items: center;
+ cursor: pointer;
+ box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+ transition: opacity 0.2s ease;
+ }
+ .chc-button:hover {
+ opacity: 0.92;
+ }
+ .chc-button:focus-visible,
+ .action-download-btn:focus-visible,
+ .reset-btn:focus-visible {
+ outline: 3px solid var(--chc-navy);
+ outline-offset: 2px;
+ }
+ .button-header {
+ font-size: 17px;
+ font-weight: 700;
+ margin-bottom: 3px;
+ }
+ .button-sub {
+ font-size: 15px;
+ font-weight: 500;
+ color: #ffffff;
+ }
+ .controls {
+ display: flex;
+ justify-content: space-between;
+ align-items: center;
+ flex-wrap: wrap;
+ gap: 10px;
+ margin-top: 14px;
+ margin-bottom: 18px;
+ font-size: 15px;
+ color: var(--chc-slate-body);
+ }
+ .reset-btn {
+ background: #ffffff;
+ border: 1px solid #cbd5e1;
+ color: #64748b;
+ padding: 6px 12px;
+ border-radius: 5px;
+ cursor: pointer;
+ font-size: 14px;
+ font-family: inherit;
+ }
+ .reset-btn:hover {
+ background: #fee2e2;
+ color: #991b1b;
+ border-color: #fca5a5;
+ }
+ </style>
 </head>
 <body>
 
@@ -231,170 +330,388 @@
 <div class="subtitle-main">NHS CHC &amp; PUPoC Claim Checklist</div>
 
 <div class="download-bar">
-    <button class="action-download-btn" onclick="downloadProgress()">📥 Download My Checklist</button>
+ <button type="button" class="action-download-btn" onclick="downloadProgress()">Download Checklist</button>
 </div>
 
 <div class="container">
-    <!-- Checklist Section 1 -->
-    <div class="card">
-        <div class="card-title">1. The Basics</div>
-        <div class="card-subtitle">Gather your core details and get ready to kick things off.</div>
-        <table>
-            <thead>
-                <tr>
-                    <th>Requirement</th>
-                    <th class="col-check">Got It?</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr><td>Full Name for PAF (Person Advocated For)</td><td class="col-check"><input type="checkbox" id="chk_1"></td></tr>
-                <tr><td>Date of Birth for PAF</td><td class="col-check"><input type="checkbox" id="chk_2"></td></tr>
-                <tr><td>NHS Number for PAF</td><td class="col-check"><input type="checkbox" id="chk_3"></td></tr>
-                <tr><td>Address(es) &amp; Postcode(s) for PAF for period of claim</td><td class="col-check"><input type="checkbox" id="chk_4"></td></tr>
-                <tr><td>Name of Advocate (You)</td><td class="col-check"><input type="checkbox" id="chk_5"></td></tr>
-                <tr><td>Claim Start and End Dates (can be decided later)</td><td class="col-check"><input type="checkbox" id="chk_6"></td></tr>
-                <tr><td>GP Name &amp; Surgery Address</td><td class="col-check"><input type="checkbox" id="chk_7"></td></tr>
-                <tr class="header-row">
-                    <td><strong>Authority To Act:</strong> <span style="color: #1E3A8A; font-weight: normal;">(Need 1 of these 3)</span></td>
-                    <td class="col-check"></td>
-                </tr>
-                <tr><td class="sub-item">• Power of Attorney Finance or Health (if living)</td><td class="col-check"><input type="checkbox" id="chk_8"></td></tr>
-                <tr><td class="sub-item">• Will &amp; Proof Of Executorship (if deceased)</td><td class="col-check"><input type="checkbox" id="chk_9"></td></tr>
-                <tr><td class="sub-item">• Letter of Authority from Estate if not Executor</td><td class="col-check"><input type="checkbox" id="chk_10"></td></tr>
-            </tbody>
-        </table>
-    </div>
+ <!-- Checklist Card 0: Common Claimant Data -->
+ <div class="card">
+ <div class="card-title">Claimant Details (Master Log)</div>
+ <div class="card-subtitle">Fill in these details once and refer back when needed.</div>
+ <table class="data-input-table">
+ <tbody>
+ <tr>
+ <td style="width: 36%; font-weight: 600;">Claimant Name</td>
+ <td><input type="text" id="data_name" class="data-input-field" placeholder="Enter full name"></td>
+ </tr>
+ <tr>
+ <td style="font-weight: 600;">Date of Birth</td>
+ <td><input type="date" id="data_dob" class="data-input-field" min="1900-01-01"></td>
+ </tr>
+ <tr>
+ <td style="font-weight: 600;">NHS Number</td>
+ <td><input type="text" id="data_nhs" class="data-input-field" placeholder="123 456 7890"></td>
+ </tr>
+ <tr>
+ <td style="font-weight: 600;">Addresses &amp; Postcodes for Period of Claim</td>
+ <td><textarea id="data_address" class="data-input-field" placeholder="Enter care home or residential address history"></textarea></td>
+ </tr>
+ <tr>
+ <td style="font-weight: 600;">Claim Period</td>
+ <td>
+ <div class="date-range-wrapper">
+ <div class="date-field-group">
+ <span class="date-field-label">
+ Claim Start Date
+ </span>
+ <input type="date" id="data_start_date" class="data-input-field" min="2012-04-01">
+ </div>
+ <div class="date-field-group">
+ <span class="date-field-label">
+ Claim End Date
+ <span style="font-weight: normal; font-size: 13px; color: #64748b;">(Date of Death if applicable)</span>
+ </span>
+ <input type="date" id="data_end_date" class="data-input-field" min="2012-04-01">
+ </div>
+ </div>
+ </td>
+ </tr>
+ </tbody>
+ </table>
+ </div>
 
-    <!-- Checklist Section 2 -->
-    <div class="card">
-        <div class="card-title">2. Care &amp; Medical Records (Essential)</div>
-        <div class="card-subtitle">Use our Template Pack to get these quickly and easily.</div>
-        <table>
-            <thead>
-                <tr>
-                    <th>Requirement</th>
-                    <th class="col-check">Got It?</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr><td>Medical Records Full notes</td><td class="col-check"><input type="checkbox" id="chk_11"></td></tr>
-                <tr><td>Care Plans Detailed (including Falls Diaries &amp; Risk Assessments)</td><td class="col-check"><input type="checkbox" id="chk_12"></td></tr>
-                <tr><td>Daily Care Logs and Notes Detailed (including Waterlow &amp; MUST scores)</td><td class="col-check"><input type="checkbox" id="chk_13"></td></tr>
-                <tr><td>eMAR (Electronic Medication Administration Records)</td><td class="col-check"><input type="checkbox" id="chk_14"></td></tr>
-                <tr><td>Incident and Accident Reports (including A&amp;E &amp; Ambulance 999 records)</td><td class="col-check"><input type="checkbox" id="chk_15"></td></tr>
-                <tr><td>Care Provider Cost Statements (for claim period)</td><td class="col-check"><input type="checkbox" id="chk_16"></td></tr>
-            </tbody>
-        </table>
-    </div>
+ <!-- Checklist Card 1: Authority to Act -->
+ <div class="card authority-section">
+ <div class="card-title">1. Authority to Act</div>
+ <div class="card-subtitle">Establish your legal authority to access records and manage the claim.</div>
+ <table>
+ <thead>
+ <tr>
+ <th>Requirement</th>
+ <th class="col-check">Got It?</th>
+ </tr>
+ </thead>
+ <tbody>
+ <tr class="header-row">
+ <td><strong>Authority To Act:</strong> <span style="color: var(--chc-slate-body); font-weight: normal;">(Need 1 of these 4)</span></td>
+ <td class="col-check"></td>
+ </tr>
+ <tr><td class="sub-item">Signed Letter of Authority from Claimant (if living, where they have capacity)</td><td class="col-check"><input type="checkbox" id="chk_24"></td></tr>
+ <tr><td class="sub-item">Power of Attorney Finance or Health (if living)</td><td class="col-check"><input type="checkbox" id="chk_7"></td></tr>
+ <tr><td class="sub-item">Will &amp; Proof Of Executorship (if deceased)</td><td class="col-check"><input type="checkbox" id="chk_8"></td></tr>
+ <tr><td class="sub-item">Letter of Authority from Estate (if deceased) if not Executor</td><td class="col-check"><input type="checkbox" id="chk_9"></td></tr>
+ </tbody>
+ </table>
+ </div>
 
-    <!-- Checklist Section 3 -->
-    <div class="card">
-        <div class="card-title">3. Supporting Evidence</div>
-        <div class="card-subtitle">These aren't necessary but useful if available.</div>
-        <table>
-            <thead>
-                <tr>
-                    <th>Requirement</th>
-                    <th class="col-check">Got It?</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr><td>DST Records, MDT Meeting Notes &amp; Refusal Documentation</td><td class="col-check"><input type="checkbox" id="chk_17"></td></tr>
-                <tr><td>Hospital Discharge Summaries &amp; Letters</td><td class="col-check"><input type="checkbox" id="chk_18"></td></tr>
-                <tr><td>Memory Clinic notes</td><td class="col-check"><input type="checkbox" id="chk_19"></td></tr>
-                <tr><td>Care Notes Prior to Care Home Admission</td><td class="col-check"><input type="checkbox" id="chk_20"></td></tr>
-                <tr><td>Local Authority Social Care Records</td><td class="col-check"><input type="checkbox" id="chk_21"></td></tr>
-                <tr><td>Specialist Clinical Assessments (TVN, OT, Continence)</td><td class="col-check"><input type="checkbox" id="chk_22"></td></tr>
-                <tr><td>DoLS Records</td><td class="col-check"><input type="checkbox" id="chk_23"></td></tr>
-                <tr><td>Mental Health Act Sectioning Records (e.g., Section 2 or 3)</td><td class="col-check"><input type="checkbox" id="chk_24"></td></tr>
-                <tr><td>DWP Attendance Allowance Records &amp; Award Notices</td><td class="col-check"><input type="checkbox" id="chk_25"></td></tr>
-                <tr><td>DWP Carer's Allowance Letters &amp; Records</td><td class="col-check"><input type="checkbox" id="chk_26"></td></tr>
-            </tbody>
-        </table>
-    </div>
+ <!-- Checklist Card 2: Absolute Minimum -->
+ <div class="card">
+ <div class="card-title">2. Absolute Minimum</div>
+ <div class="card-subtitle">The vital information providers and what's needed.</div>
+ <table>
+ <thead>
+ <tr>
+ <th>Requirement</th>
+ <th class="col-check">Got It?</th>
+ </tr>
+ </thead>
+ <tbody>
+ <tr>
+ <td>
+ <strong>GP Practice Manager</strong>
+ <div class="sub-details">Full medical records, summary care records, historical consultations &amp; GP notes.</div>
+ </td>
+ <td class="col-check"><input type="checkbox" id="chk_10"></td>
+ </tr>
+ <tr>
+ <td>
+ <strong>Care Home Manager / Care Agency</strong>
+ <div class="sub-details">Care plans, daily logs, eMAR, falls diaries, risk assessments, Waterlow/MUST &amp; cost statements.</div>
+ </td>
+ <td class="col-check"><input type="checkbox" id="chk_11"></td>
+ </tr>
+ </tbody>
+ </table>
+ </div>
 
-    <!-- Checklist Controls -->
-    <div class="controls">
-        <span>🔒 Progress saves automatically.</span>
-        <button class="reset-btn" onclick="resetChecklist()">Reset Ticks</button>
-    </div>
+ <!-- Amber Callout: Encourage checking Sections 3 & 4 -->
+ <div class="amber-callout">
+ <div class="amber-callout-title">Important: Keep Scrolling for Sections 3 &amp; 4</div>
+ GP and care home records are the minimum needed to start, but the more supporting evidence you gather from the extra providers below (such as district nursing, hospital discharge summaries, and social care files), the stronger your claim will be. Check Sections 3 and 4 before sending your requests.
+ </div>
 
-    <!-- Mid-Page Call to Action Box -->
-    <div class="next-steps-container">
-        <div class="next-steps-title">Ready to take the next step?</div>
-        <div class="next-steps-subtitle">Records missing? Your Template Pack is fully refunded against the Audit, so everyone pays the same.</div>
-        <div class="button-grid">
-            <a href="YOUR_TEMPLATE_LINK" class="chc-button">
-                <span class="button-header">Need Records?</span>
-                <span class="button-sub">Get Your Template Pack (£29)</span>
-            </a>
-            <a href="YOUR_AUDIT_LINK" class="chc-button">
-                <span class="button-header">Got Everything?</span>
-                <span class="button-sub">Get Your Audit (£229)</span>
-            </a>
-        </div>
-    </div>
+ <!-- Mid-Page Call to Action Box (Replace YOUR_TEMPLATE_LINK with Payhip URL when ready) -->
+ <div class="next-steps-container">
+ <div class="next-steps-title">Missing Authority and/or Records?</div>
+ <div class="next-steps-subtitle">Get the Letter of Authority and statutory GP &amp; care home request letters in one pack.</div>
+ <div class="button-grid">
+ <a href="YOUR_TEMPLATE_LINK" class="chc-button">
+ <span class="button-header">Get Template Pack</span>
+ <span class="button-sub">Instant Access (£49)</span>
+ </a>
+ <a href="https://chcblueprint.co.uk" class="chc-button">
+ <span class="button-header">Want It Checked?</span>
+ <span class="button-sub">Full Record Audit (£249)</span>
+ </a>
+ </div>
+ </div>
 
-    <!-- Bottom Matching Centered Download Button -->
-    <div class="download-bar">
-        <button class="action-download-btn" onclick="downloadProgress()">📥 Download My Checklist</button>
-    </div>
+ <!-- Checklist Card 3: Extended Core Providers -->
+ <div class="card">
+ <div class="card-title">3. Additional Care Providers</div>
+ <div class="card-subtitle">GP and care home records are the minimum needed to start, though the more supporting evidence you can gather from these providers, the stronger your claim will be.</div>
+ <table>
+ <thead>
+ <tr>
+ <th>Requirement</th>
+ <th class="col-check">Got It?</th>
+ </tr>
+ </thead>
+ <tbody>
+ <tr>
+ <td>
+ <strong>Local Authority / Social Services</strong>
+ <div class="sub-details">Social care assessments, financial contribution records, social work notes &amp; safeguarding files.</div>
+ </td>
+ <td class="col-check"><input type="checkbox" id="chk_12"></td>
+ </tr>
+ <tr>
+ <td>
+ <strong>Community Health / District Nursing</strong>
+ <div class="sub-details">District nursing notes, tissue viability/wound assessments, occupational therapy &amp; continence notes.</div>
+ </td>
+ <td class="col-check"><input type="checkbox" id="chk_13"></td>
+ </tr>
+ <tr>
+ <td>
+ <strong>Integrated Care Board (ICB)</strong>
+ <div class="sub-details">Previous DST assessments, MDT meeting notes &amp; formal checklist refusal documentation.</div>
+ </td>
+ <td class="col-check"><input type="checkbox" id="chk_14"></td>
+ </tr>
+ <tr>
+ <td>
+ <strong>Hospital Inpatient &amp; Outpatient Services</strong>
+ <div class="sub-details">Discharge summaries, inpatient notes, A&amp;E attendances &amp; specialist outpatient clinic letters.</div>
+ </td>
+ <td class="col-check"><input type="checkbox" id="chk_15"></td>
+ </tr>
+ </tbody>
+ </table>
+ </div>
+
+ <!-- Checklist Card 4: Specialist Providers & Supporting Evidence -->
+ <div class="card">
+ <div class="card-title">4. Specialist Care Providers &amp; Additional Evidence</div>
+ <div class="card-subtitle">Additional specialist clinical records and benefit award notices (add if applicable).</div>
+ <table>
+ <thead>
+ <tr>
+ <th>Requirement</th>
+ <th class="col-check">Got It?</th>
+ </tr>
+ </thead>
+ <tbody>
+ <tr>
+ <td>
+ <strong>NHS Mental Health Trust</strong>
+ <div class="sub-details">MHA detention docs, psychiatric assessments, CPA reviews, Section 117 plans &amp; tribunal records.</div>
+ </td>
+ <td class="col-check"><input type="checkbox" id="chk_16"></td>
+ </tr>
+ <tr>
+ <td>
+ <strong>NHS Memory Clinic / Older Adult Services</strong>
+ <div class="sub-details">Cognitive assessments, ACE/MMSE sheets, diagnosis records &amp; consultant letters.</div>
+ </td>
+ <td class="col-check"><input type="checkbox" id="chk_17"></td>
+ </tr>
+ <tr>
+ <td>
+ <strong>NHS Community Falls Prevention Service</strong>
+ <div class="sub-details">Falls &amp; balance assessments, bone health screening &amp; environmental safety reports.</div>
+ </td>
+ <td class="col-check"><input type="checkbox" id="chk_18"></td>
+ </tr>
+ <tr>
+ <td>
+ <strong>Hospice / Palliative Care Provider</strong>
+ <div class="sub-details">Inpatient notes, palliative MDT reviews, end-of-life pathways &amp; symptom control charts.</div>
+ </td>
+ <td class="col-check"><input type="checkbox" id="chk_19"></td>
+ </tr>
+ <tr>
+ <td>
+ <strong>Community Dental / Special Care Dental</strong>
+ <div class="sub-details">Dental health assessments, domiciliary visit notes &amp; records of oral pain or infection.</div>
+ </td>
+ <td class="col-check"><input type="checkbox" id="chk_20"></td>
+ </tr>
+ <tr>
+ <td>
+ <strong>Optometry / Ophthalmology Providers</strong>
+ <div class="sub-details">Sight test records, visual acuity assessments &amp; specialist ophthalmology clinic notes.</div>
+ </td>
+ <td class="col-check"><input type="checkbox" id="chk_21"></td>
+ </tr>
+ <tr>
+ <td>
+ <strong>Deprivation of Liberty Safeguards (DoLS) Records</strong>
+ <div class="sub-details">DoLS authorisation forms, best interests &amp; mental capacity assessments.</div>
+ </td>
+ <td class="col-check"><input type="checkbox" id="chk_22"></td>
+ </tr>
+ <tr>
+ <td>
+ <strong>DWP Attendance Allowance &amp; Carer's Allowance Records</strong>
+ <div class="sub-details">Benefit award notices, care component assessments, and historical correspondence.</div>
+ </td>
+ <td class="col-check"><input type="checkbox" id="chk_23"></td>
+ </tr>
+ </tbody>
+ </table>
+ </div>
+
+ <!-- Checklist Controls -->
+ <div class="controls">
+ <span>Progress saves automatically on this device.</span>
+ <button type="button" class="reset-btn" onclick="resetChecklist()">Reset Form &amp; Ticks</button>
+ </div>
+
+ <!-- Bottom Call to Action Box (Replace YOUR_TEMPLATE_LINK with Payhip URL when ready) -->
+ <div class="next-steps-container">
+ <div class="next-steps-title">Ready to take the next step?</div>
+ <div class="next-steps-subtitle">Bought the Template Pack (£49)? We credit your £49 back if you upgrade to an Audit (£249).</div>
+ <div class="button-grid">
+ <a href="YOUR_TEMPLATE_LINK" class="chc-button">
+ <span class="button-header">Need Records?</span>
+ <span class="button-sub">Get Your Template Pack (£49)</span>
+ </a>
+ <a href="https://chcblueprint.co.uk" class="chc-button">
+ <span class="button-header">Got Everything?</span>
+ <span class="button-sub">Get Your Audit (£249)</span>
+ </a>
+ </div>
+ </div>
+
+ <!-- Bottom Matching Centered Download Button -->
+ <div class="download-bar" style="margin-bottom: 0;">
+ <button type="button" class="action-download-btn" onclick="downloadProgress()">Download Checklist</button>
+ </div>
 </div>
 
 <script>
-    document.addEventListener("DOMContentLoaded", () => {
-        const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-        
-        checkboxes.forEach(chk => {
-            const savedState = localStorage.getItem(chk.id) || sessionStorage.getItem(chk.id);
-            if (savedState === "true") {
-                chk.checked = true;
-            }
-            
-            chk.addEventListener("change", () => {
-                try {
-                    localStorage.setItem(chk.id, chk.checked);
-                } catch (e) {
-                    sessionStorage.setItem(chk.id, chk.checked);
-                }
-            });
-        });
-    });
+ document.addEventListener("DOMContentLoaded", () => {
+ // Automatically set max DOB to exactly 18 years ago today
+ const today = new Date();
+ const eighteenYearsAgo = new Date(today.getFullYear() - 18, today.getMonth(), today.getDate());
+ const yyyyDob = eighteenYearsAgo.getFullYear();
+ let mmDob = eighteenYearsAgo.getMonth() + 1;
+ let ddDob = eighteenYearsAgo.getDate();
+ if (mmDob < 10) mmDob = '0' + mmDob;
+ if (ddDob < 10) ddDob = '0' + ddDob;
+ document.getElementById('data_dob').max = `${yyyyDob}-${mmDob}-${ddDob}`;
 
-    function downloadProgress() {
-        const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-        checkboxes.forEach(chk => {
-            if (chk.checked) {
-                chk.setAttribute('checked', 'checked');
-            } else {
-                chk.removeAttribute('checked');
-            }
-        });
+ // Automatically set max claim start date to today's date
+ const yyyyToday = today.getFullYear();
+ let mmToday = today.getMonth() + 1;
+ let ddToday = today.getDate();
+ if (mmToday < 10) mmToday = '0' + mmToday;
+ if (ddToday < 10) ddToday = '0' + ddToday;
+ document.getElementById('data_start_date').max = `${yyyyToday}-${mmToday}-${ddToday}`;
 
-        const htmlContent = "<!DOCTYPE html>\n" + document.documentElement.outerHTML;
-        
-        const blob = new Blob([htmlContent], { type: 'text/html;charset=utf-8' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'chc-claim-checklist.html';
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
-    }
+ // Handle Checkboxes
+ const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+ checkboxes.forEach(chk => {
+ const savedState = localStorage.getItem(chk.id) || sessionStorage.getItem(chk.id);
+ if (savedState === "true") {
+ chk.checked = true;
+ }
+ chk.addEventListener("change", () => {
+ try {
+ localStorage.setItem(chk.id, chk.checked);
+ } catch (e) {
+ sessionStorage.setItem(chk.id, chk.checked);
+ }
+ });
+ });
 
-    function resetChecklist() {
-        if (confirm("Are you sure you want to clear all ticked boxes?")) {
-            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-            checkboxes.forEach(chk => {
-                chk.checked = false;
-                chk.removeAttribute('checked');
-                localStorage.removeItem(chk.id);
-                sessionStorage.removeItem(chk.id);
-            });
-        }
-    }
+ // Handle Text Inputs, Date Inputs & Textareas
+ const inputs = document.querySelectorAll('input[type="text"], input[type="date"], textarea');
+ inputs.forEach(input => {
+ const savedValue = localStorage.getItem(input.id) || sessionStorage.getItem(input.id);
+ if (savedValue !== null) {
+ input.value = savedValue;
+ }
+ input.addEventListener("input", () => {
+ try {
+ localStorage.setItem(input.id, input.value);
+ } catch (e) {
+ sessionStorage.setItem(input.id, input.value);
+ }
+ });
+ input.addEventListener("change", () => {
+ try {
+ localStorage.setItem(input.id, input.value);
+ } catch (e) {
+ sessionStorage.setItem(input.id, input.value);
+ }
+ });
+ });
+ });
+
+ function downloadProgress() {
+ const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+ checkboxes.forEach(chk => {
+ if (chk.checked) {
+ chk.setAttribute('checked', 'checked');
+ } else {
+ chk.removeAttribute('checked');
+ }
+ });
+
+ const inputs = document.querySelectorAll('input[type="text"], input[type="date"], textarea');
+ inputs.forEach(inp => {
+ inp.setAttribute('value', inp.value);
+ if (inp.tagName.toLowerCase() === 'textarea') {
+ inp.textContent = inp.value;
+ }
+ });
+
+ const htmlContent = "<!DOCTYPE html>\n" + document.documentElement.outerHTML;
+ const blob = new Blob([htmlContent], { type: 'text/html;charset=utf-8' });
+ const url = URL.createObjectURL(blob);
+ const a = document.createElement('a');
+ a.href = url;
+ a.download = 'chc-claim-checklist.html';
+ document.body.appendChild(a);
+ a.click();
+ document.body.removeChild(a);
+ URL.revokeObjectURL(url);
+ }
+
+ function resetChecklist() {
+ if (confirm("Are you sure you want to clear all data fields and ticked boxes?")) {
+ const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+ checkboxes.forEach(chk => {
+ chk.checked = false;
+ chk.removeAttribute('checked');
+ localStorage.removeItem(chk.id);
+ sessionStorage.removeItem(chk.id);
+ });
+
+ const inputs = document.querySelectorAll('input[type="text"], input[type="date"], textarea');
+ inputs.forEach(inp => {
+ inp.value = '';
+ inp.removeAttribute('value');
+ if (inp.tagName.toLowerCase() === 'textarea') {
+ inp.textContent = '';
+ }
+ localStorage.removeItem(inp.id);
+ sessionStorage.removeItem(inp.id);
+ });
+ }
+ }
 </script>
 
 </body>
