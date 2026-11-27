@@ -1,0 +1,1375 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>CHC Blueprint - Toolkit Route Finder</title>
+ <style>
+ :root {
+ --chc-navy: #1E3A8A;
+ --chc-green: #188038;
+ --chc-green-text: #146C2E;
+ --chc-light-bg: #EBF2FA;
+ --chc-blue-box: #EFF6FF;
+ --chc-blue-border: #BFDBFE;
+ --chc-amber-bg: #FFFBEB;
+ --chc-amber-border: #F59E0B;
+ --chc-amber-text: #78350F;
+ --chc-slate-dark: #1E293B;
+ --chc-slate-body: #334155;
+ --chc-slate-muted: #64748B;
+ --chc-footer-bg: #F3F4F6;
+ }
+ *, *::before, *::after {
+ box-sizing: border-box;
+ }
+ body {
+ font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+ color: var(--chc-slate-dark);
+ line-height: 1.5;
+ max-width: 960px;
+ margin: 0 auto;
+ padding: 20px 20px 36px 20px;
+ background-color: #f8fafc;
+ -webkit-font-smoothing: antialiased;
+ }
+ h1 {
+ color: var(--chc-navy);
+ text-align: center;
+ margin: 0 0 4px 0;
+ font-size: 28px;
+ font-weight: 800;
+ }
+ .subtitle-main {
+ text-align: center;
+ font-size: 16px;
+ font-weight: 600;
+ color: var(--chc-navy);
+ margin-bottom: 18px;
+ }
+ .container {
+ background: #ffffff;
+ border: 2px solid var(--chc-navy);
+ border-radius: 10px;
+ padding: 22px 24px;
+ box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+ }
+ .top-bar {
+ display: flex;
+ justify-content: space-between;
+ align-items: center;
+ flex-wrap: wrap;
+ gap: 10px;
+ padding-bottom: 14px;
+ margin-bottom: 18px;
+ border-bottom: 1.5px solid #e2e8f0;
+ }
+ .folder-pill {
+ display: inline-block;
+ background-color: #ecfdf5;
+ color: var(--chc-green-text);
+ border: 1px solid #a7f3d0;
+ font-size: 13px;
+ font-weight: 700;
+ text-transform: uppercase;
+ letter-spacing: 0.04em;
+ padding: 4px 10px;
+ border-radius: 6px;
+ }
+ .nav-buttons {
+ display: flex;
+ gap: 8px;
+ }
+ .nav-btn {
+ background-color: #ffffff;
+ border: 1.5px solid #cbd5e1;
+ color: var(--chc-navy);
+ padding: 6px 14px;
+ border-radius: 6px;
+ font-size: 15px;
+ font-weight: 600;
+ font-family: inherit;
+ cursor: pointer;
+ }
+ .nav-btn:hover {
+ background-color: var(--chc-blue-box);
+ border-color: var(--chc-navy);
+ }
+ .question-title {
+ color: var(--chc-navy);
+ font-size: 22px;
+ font-weight: 800;
+ margin: 0 0 8px 0;
+ line-height: 1.3;
+ }
+ .question-desc {
+ color: var(--chc-slate-body);
+ font-size: 16px;
+ margin: 0 0 18px 0;
+ }
+ .folder-text {
+ font-weight: 700;
+ color: var(--chc-navy);
+ }
+ .options-list {
+ display: flex;
+ flex-direction: column;
+ gap: 12px;
+ }
+ .option-btn {
+ display: block;
+ width: 100%;
+ text-align: left;
+ background-color: var(--chc-light-bg);
+ border: 2px solid var(--chc-navy);
+ border-radius: 8px;
+ padding: 15px 18px;
+ cursor: pointer;
+ font-family: inherit;
+ transition: background-color 0.15s ease, transform 0.1s ease;
+ }
+ .option-btn:hover {
+ background-color: #dbeafe;
+ }
+ .option-label {
+ display: block;
+ font-size: 17px;
+ font-weight: 700;
+ color: var(--chc-navy);
+ margin-bottom: 3px;
+ }
+ .option-sub {
+ display: block;
+ font-size: 15px;
+ font-weight: 400;
+ color: var(--chc-slate-body);
+ }
+ .boxes-grid {
+ display: flex;
+ flex-direction: column;
+ gap: 14px;
+ margin-bottom: 18px;
+ }
+ .action-box {
+ background-color: #ffffff;
+ border: 1.5px solid var(--chc-navy);
+ border-radius: 8px;
+ padding: 16px 18px;
+ }
+ .action-box.highlight-box {
+ background-color: var(--chc-amber-bg);
+ border: 1.5px solid var(--chc-amber-border);
+ color: var(--chc-amber-text);
+ }
+ .action-box-title {
+ font-size: 17px;
+ font-weight: 700;
+ color: var(--chc-navy);
+ margin: 0 0 6px 0;
+ }
+ .action-box.highlight-box .action-box-title {
+ color: #b45309;
+ }
+ .action-box-body {
+ font-size: 16px;
+ color: var(--chc-slate-body);
+ margin: 0 0 12px 0;
+ }
+ .action-box.highlight-box .action-box-body {
+ color: var(--chc-amber-text);
+ margin-bottom: 0;
+ }
+ .action-box-body.no-btn {
+ margin-bottom: 0;
+ }
+ .card-actions {
+ display: flex;
+ flex-wrap: wrap;
+ gap: 10px;
+ align-items: center;
+ }
+ .open-pdf-btn {
+ display: inline-block;
+ background-color: var(--chc-green);
+ color: #ffffff;
+ text-decoration: none;
+ padding: 10px 18px;
+ border-radius: 6px;
+ font-size: 16px;
+ font-weight: 700;
+ box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+ }
+ .open-pdf-btn:hover {
+ opacity: 0.92;
+ }
+ .copy-email-btn {
+ display: inline-block;
+ background-color: #ffffff;
+ color: var(--chc-navy);
+ border: 2px solid var(--chc-navy);
+ padding: 9px 16px;
+ border-radius: 6px;
+ font-size: 16px;
+ font-weight: 700;
+ font-family: inherit;
+ cursor: pointer;
+ }
+ .copy-email-btn:hover {
+ background-color: var(--chc-blue-box);
+ }
+ .copy-email-btn.copied {
+ background-color: #ecfdf5;
+ border-color: var(--chc-green-text);
+ color: var(--chc-green-text);
+ }
+ .tracker-banner {
+ background-color: var(--chc-blue-box);
+ border: 1.5px solid var(--chc-blue-border);
+ border-radius: 8px;
+ padding: 16px 18px;
+ display: flex;
+ justify-content: space-between;
+ align-items: center;
+ flex-wrap: wrap;
+ gap: 12px;
+ margin-top: 6px;
+ }
+ .tracker-banner-text {
+ font-size: 16px;
+ color: var(--chc-slate-dark);
+ }
+ .tracker-banner-text strong {
+ color: var(--chc-navy);
+ display: block;
+ margin-bottom: 2px;
+ }
+ .open-tracker-btn {
+ display: inline-block;
+ background-color: var(--chc-navy);
+ color: #ffffff;
+ text-decoration: none;
+ padding: 11px 18px;
+ border-radius: 6px;
+ font-size: 16px;
+ font-weight: 700;
+ white-space: nowrap;
+ }
+ .open-tracker-btn:hover {
+ opacity: 0.92;
+ }
+ .quick-tips {
+ margin-top: 18px;
+ background-color: var(--chc-footer-bg);
+ border: 1px solid #cbd5e1;
+ border-radius: 8px;
+ padding: 14px 18px;
+ font-size: 15px;
+ color: var(--chc-slate-body);
+ }
+ .quick-tips strong {
+ color: var(--chc-navy);
+ }
+ .guide-details {
+ margin-top: 14px;
+ background-color: #ffffff;
+ border: 1.5px solid var(--chc-navy);
+ border-radius: 8px;
+ padding: 14px 18px;
+ }
+ .guide-details summary {
+ font-size: 17px;
+ font-weight: 700;
+ color: var(--chc-navy);
+ cursor: pointer;
+ padding: 2px 0;
+ }
+ .guide-content {
+ margin-top: 12px;
+ padding-top: 12px;
+ border-top: 1px solid #e2e8f0;
+ font-size: 15px;
+ color: var(--chc-slate-body);
+ }
+ .guide-content ol,
+ .guide-content ul {
+ margin: 8px 0 0 0;
+ padding-left: 22px;
+ }
+ .guide-content li {
+ margin-bottom: 8px;
+ }
+ .guide-content li:last-child {
+ margin-bottom: 0;
+ }
+ .guide-content strong {
+ color: var(--chc-slate-dark);
+ }
+ .guide-note {
+ margin-top: 12px;
+ background-color: var(--chc-amber-bg);
+ border: 1px solid var(--chc-amber-border);
+ color: var(--chc-amber-text);
+ border-radius: 6px;
+ padding: 10px 14px;
+ font-size: 14px;
+ }
+ .directory-grid {
+ display: grid;
+ grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+ gap: 12px;
+ margin-top: 10px;
+ }
+ .directory-card {
+ background-color: var(--chc-blue-box);
+ border: 1px solid var(--chc-blue-border);
+ border-radius: 7px;
+ padding: 12px 14px;
+ }
+ .directory-card-title {
+ font-size: 15px;
+ font-weight: 700;
+ color: var(--chc-navy);
+ margin-bottom: 4px;
+ }
+ .directory-card p {
+ margin: 0;
+ font-size: 14px;
+ color: var(--chc-slate-body);
+ }
+ .all-files-details {
+ margin-top: 14px;
+ background-color: #ffffff;
+ border: 1.5px solid #cbd5e1;
+ border-radius: 8px;
+ padding: 12px 18px;
+ }
+ .all-files-details summary {
+ font-size: 16px;
+ font-weight: 700;
+ color: var(--chc-navy);
+ cursor: pointer;
+ padding: 4px 0;
+ }
+ .folder-index-group {
+ margin-top: 14px;
+ padding-top: 12px;
+ border-top: 1px solid #e2e8f0;
+ }
+ .folder-index-title {
+ font-size: 15px;
+ font-weight: 700;
+ color: var(--chc-green-text);
+ text-transform: uppercase;
+ margin: 0 0 8px 0;
+ }
+ .folder-links {
+ display: flex;
+ flex-wrap: wrap;
+ gap: 8px;
+ }
+ .index-link {
+ display: inline-block;
+ background-color: var(--chc-light-bg);
+ border: 1px solid #bfdbfe;
+ color: var(--chc-navy);
+ text-decoration: none;
+ font-size: 14px;
+ font-weight: 600;
+ padding: 6px 11px;
+ border-radius: 5px;
+ }
+ .index-link:hover {
+ background-color: #dbeafe;
+ border-color: var(--chc-navy);
+ }
+ </style>
+</head>
+<body>
+
+ <h1>CHC Blueprint</h1>
+ <div class="subtitle-main">Toolkit Route Finder &amp; Quick-Start Guide</div>
+
+ <div class="container">
+ <div class="top-bar">
+ <span class="folder-pill" id="folderBadge">Start Here</span>
+ <div class="nav-buttons" id="navControls" style="display: none;">
+ <button type="button" class="nav-btn" onclick="goBack()">Back</button>
+ <button type="button" class="nav-btn" onclick="restartRoute()">Start Over</button>
+ </div>
+ </div>
+
+ <div id="routeContent"></div>
+
+ <div class="quick-tips" id="quickTipsBox">
+ <strong>How this Route Finder works:</strong> Select the option above that matches your situation to jump straight to the exact letters, forms, and tracker you need.
+ </div>
+ </div>
+
+ <details class="guide-details">
+ <summary>Get Organised (Before You Send Anything)</summary>
+ <div class="guide-content">
+ <p style="margin: 0 0 8px 0;">Spending ten minutes setting up a tidy system before you send your first request saves hours of searching later:</p>
+ <ol>
+ <li><strong>Create one main folder on your computer:</strong> Name it <strong>CHC Claim</strong>, and create a separate subfolder inside it for each organisation you contact (for example: <em>GP Surgery</em>, <em>Care Home</em>, <em>Local Council</em>, <em>Hospital Trust</em>, and <em>ICB</em>).</li>
+ <li><strong>Prepare a ready-to-attach verification pack:</strong> Scan or photograph clear copies of your <strong>Proof of Identity</strong> (passport or driving licence), <strong>Proof of Address</strong> (utility bill or bank statement dated within the last 3 months), and your <strong>Legal Authority</strong> (Registered Lasting Power of Attorney, Deputyship Order, Grant of Probate, or signed Letter of Authority) so you can attach all three to every request in seconds.</li>
+ <li><strong>Create a matching folder in your email account:</strong> Set up a <strong>CHC Claim</strong> label or folder in Gmail or Outlook and keep every email chain with each provider in a single thread so you have a dated paper trail if you need to chase or escalate.</li>
+ <li><strong>Log every request immediately:</strong> Open the <strong>Correspondence Tracker</strong> as soon as you press send, enter the date, and export your statutory deadline alarms to your calendar.</li>
+ </ol>
+ </div>
+ </details>
+
+ <details class="guide-details">
+ <summary>Where to Find Email Addresses</summary>
+ <div class="guide-content">
+ <p style="margin: 0 0 8px 0;">Use the directories and tips below to find the right contact email for each organisation:</p>
+ <div class="directory-grid">
+ <div class="directory-card">
+ <div class="directory-card-title">GP Surgeries</div>
+ <p>Check the practice website under <strong>Contact Us</strong> or <strong>Privacy Notice</strong> for the Practice Manager or Data Protection Officer email, or search the NHS Find a GP directory on <strong>nhs.uk</strong>. If only a general reception address is listed, mark the subject line for the attention of the Practice Manager.</p>
+ </div>
+ <div class="directory-card">
+ <div class="directory-card-title">Care Homes &amp; Care Agencies</div>
+ <p>Look up the provider on the Care Quality Commission directory at <strong>cqc.org.uk</strong> or check the care home's own website. Send record requests to the Registered Manager and fee ledger requests to the head office Accounts or Finance team.</p>
+ </div>
+ <div class="directory-card">
+ <div class="directory-card-title">Integrated Care Boards (ICBs)</div>
+ <p>Search <strong>nhs.uk</strong> for your local Integrated Care Board, then open the <strong>Contact Us</strong>, <strong>Freedom of Information / Subject Access</strong>, or <strong>Continuing Healthcare</strong> page on the ICB website to find their Data Protection Officer and CHC team email addresses.</p>
+ </div>
+ <div class="directory-card">
+ <div class="directory-card-title">Local Councils (Social Services)</div>
+ <p>Find your council via <strong>gov.uk/find-local-council</strong>. Search the council website for <strong>Subject Access Request</strong> or <strong>Data Protection Officer</strong> for care assessments, and <strong>Adult Social Care Finance</strong> for fee ledgers and financial assessments.</p>
+ </div>
+ <div class="directory-card">
+ <div class="directory-card-title">NHS Hospital &amp; Mental Health Trusts</div>
+ <p>Find the trust on <strong>nhs.uk</strong> and check its website for <strong>Access to Health Records</strong>, <strong>Medical Records</strong>, or <strong>Subject Access Requests</strong>. Most NHS trusts have a dedicated medical records disclosure email address.</p>
+ </div>
+ <div class="directory-card">
+ <div class="directory-card-title">Hospices &amp; Specialist Clinics</div>
+ <p>Search the hospice directory at <strong>hospiceuk.org</strong> or check the clinic's website under <strong>Privacy Policy</strong> or <strong>Patient Information</strong> for their Information Governance or Caldicott Guardian contact email.</p>
+ </div>
+ </div>
+ <div class="guide-note">
+ <strong>Tip if an organisation only has a telephone number or web form:</strong> Call reception and ask for the email address of the <strong>Data Protection Officer</strong> or <strong>Access to Health Records team</strong> so you have a written, timestamped record of your request. Always specify that you require <strong>full, unredacted records</strong> for an NHS Continuing Healthcare / retrospective funding claim.
+ </div>
+ </div>
+ </details>
+
+ <details class="all-files-details">
+ <summary>Browse All 22 Templates Directly by Folder</summary>
+
+ <div class="folder-index-group">
+ <div class="folder-index-title">Folder 01: Section 117 Mental Health Aftercare (Packs / 01 Sectioned)</div>
+ <div class="folder-links">
+ <a class="index-link" href="Packs/01 Sectioned/1.1 Delegation/1A Delegation.pdf" target="_blank" rel="noopener">1A Delegation.pdf</a>
+ <a class="index-link" href="Packs/01 Sectioned/1.2 Evidence Gathering/1B Hospital Record Request Living.pdf" target="_blank" rel="noopener">1B Hospital Record Request Living.pdf</a>
+ <a class="index-link" href="Packs/01 Sectioned/1.2 Evidence Gathering/1C Hospital Record Request Deceased.pdf" target="_blank" rel="noopener">1C Hospital Record Request Deceased.pdf</a>
+ <a class="index-link" href="Packs/01 Sectioned/1.2 Evidence Gathering/1D Care Home Ledger Request Living.pdf" target="_blank" rel="noopener">1D Care Home Ledger Request Living.pdf</a>
+ <a class="index-link" href="Packs/01 Sectioned/1.2 Evidence Gathering/1E Care Home Ledger Request Deceased.pdf" target="_blank" rel="noopener">1E Care Home Ledger Request Deceased.pdf</a>
+ <a class="index-link" href="Packs/01 Sectioned/1.3 Stop Ongoing Fees/1F Council Billing Hold Notice.pdf" target="_blank" rel="noopener">1F Council Billing Hold Notice.pdf</a>
+ <a class="index-link" href="Packs/01 Sectioned/1.3 Stop Ongoing Fees/1G Care Home Billing Hold Notice.pdf" target="_blank" rel="noopener">1G Care Home Billing Hold Notice.pdf</a>
+ <a class="index-link" href="Packs/01 Sectioned/1.4 Claim/1H Claim.pdf" target="_blank" rel="noopener">1H Claim.pdf</a>
+ <a class="index-link" href="Packs/01 Sectioned/1.4 Claim/1I Reject Offer.pdf" target="_blank" rel="noopener">1I Reject Offer.pdf</a>
+ <a class="index-link" href="Packs/01 Sectioned/1.5 Escalate/1J First Chase.pdf" target="_blank" rel="noopener">1J First Chase.pdf</a>
+ <a class="index-link" href="Packs/01 Sectioned/1.5 Escalate/1K Final Demand.pdf" target="_blank" rel="noopener">1K Final Demand.pdf</a>
+ <a class="index-link" href="Packs/01 Sectioned/1.5 Escalate/1L Ombudsman.pdf" target="_blank" rel="noopener">1L Ombudsman.pdf</a>
+ </div>
+ </div>
+
+ <div class="folder-index-group">
+ <div class="folder-index-title">Folder 02: Delegation &amp; Authority (Packs / 02 Delegation)</div>
+ <div class="folder-links">
+ <a class="index-link" href="Packs/02 Delegation/Delegation.pdf" target="_blank" rel="noopener">Delegation.pdf</a>
+ </div>
+ </div>
+
+ <div class="folder-index-group">
+ <div class="folder-index-title">Folder 03: Evidence Living (Packs / 03 Evidence Living)</div>
+ <div class="folder-links">
+ <a class="index-link" href="Packs/03 Evidence Living/3A SAR Firm.pdf" target="_blank" rel="noopener">3A SAR Firm.pdf</a>
+ <a class="index-link" href="Packs/03 Evidence Living/3B SAR Gentle.pdf" target="_blank" rel="noopener">3B SAR Gentle.pdf</a>
+ <a class="index-link" href="Packs/03 Evidence Living/3C Financial Records.pdf" target="_blank" rel="noopener">3C Financial Records.pdf</a>
+ </div>
+ </div>
+
+ <div class="folder-index-group">
+ <div class="folder-index-title">Folder 04: Evidence Deceased (Packs / 04 Evidence Deceased)</div>
+ <div class="folder-links">
+ <a class="index-link" href="Packs/04 Evidence Deceased/4A AHRA Firm.pdf" target="_blank" rel="noopener">4A AHRA Firm.pdf</a>
+ <a class="index-link" href="Packs/04 Evidence Deceased/4B AHRA Gentle.pdf" target="_blank" rel="noopener">4B AHRA Gentle.pdf</a>
+ <a class="index-link" href="Packs/04 Evidence Deceased/4C Estate Records.pdf" target="_blank" rel="noopener">4C Estate Records.pdf</a>
+ </div>
+ </div>
+
+ <div class="folder-index-group">
+ <div class="folder-index-title">Folder 05: Escalation (Packs / 05 Escalation)</div>
+ <div class="folder-links">
+ <a class="index-link" href="Packs/05 Escalation/5A Chase.pdf" target="_blank" rel="noopener">5A Chase.pdf</a>
+ <a class="index-link" href="Packs/05 Escalation/5B Final Demand.pdf" target="_blank" rel="noopener">5B Final Demand.pdf</a>
+ <a class="index-link" href="Packs/05 Escalation/5C ICO.pdf" target="_blank" rel="noopener">5C ICO.pdf</a>
+ </div>
+ </div>
+ </details>
+
+ <script>
+ const SCOPE_BULLETS = [
+ "- GP & Medical Records: Complete iGPR/clinical exports, full coded entries, free-text consultations, hospital discharge summaries, specialist clinic letters, and repeat dispensing histories.",
+ "- Care Home & Nursing Records: Daily care notes, electronic Medication Administration Records (eMAR), dependency trackers, fluid and nutrition charts, skin integrity and pressure area care plans, and falls logs/body maps.",
+ "- Social Care, Hospital & ICB Files: Care Act 2014 assessments, Mental Capacity, Best Interests and DoLS records, district nursing and therapy notes, CHC Checklists, Decision Support Tools (DSTs), and funding panel minutes."
+ ].join("\n");
+
+ const emailTemplates = {
+ "1B": [
+ "To: [Hospital Medical Records / Access to Health Records Email Address]",
+ "Subject: Subject Access Request: Section 3 Detention & Discharge Records - [Claimant's Full Name] - DOB: [Claimant's DOB] - NHS No: [Claimant's NHS No.]",
+ "",
+ "Dear Access to Health Records Team,",
+ "",
+ "I am writing as the authorised representative for [Claimant's Full Name] pursuant to Article 15 of the UK General Data Protection Regulation (UK GDPR) and Section 45 of the Data Protection Act 2018.",
+ "",
+ "Please provide complete copies of records relating to the claimant's detention under Section 3 of the Mental Health Act 1983 and subsequent discharge covering [Start Date] to [End Date], including:",
+ "- Section 3 detention documentation (Forms A2, A3, and A4) and any renewal or extension records.",
+ "- Hospital inpatient notes, multidisciplinary care reviews, and the formal discharge summary and Section 117 aftercare plan.",
+ "",
+ "Please find attached copies of my proof of identity, proof of address, and [Select: Registered Lasting Power of Attorney / Court of Protection Deputyship Order / Signed Letter of Authority].",
+ "",
+ "Under UK GDPR and the Data Protection Act 2018, please provide these records free of charge in electronic format (PDF) within one calendar month. Please acknowledge receipt within five working days.",
+ "",
+ "Yours faithfully,",
+ "[Your Name]",
+ "[Your Telephone Number]"
+ ].join("\n"),
+
+ "1C": [
+ "To: [Hospital Medical Records / Access to Health Records Email Address]",
+ "Subject: Request under Access to Health Records Act 1990: Section 3 Detention Records - Estate of the Late [Claimant's Full Name] - DOB: [Claimant's DOB] - DOD: [Claimant's DOD]",
+ "",
+ "Dear Access to Health Records Team,",
+ "",
+ "I am writing as the Personal Representative / Executor (or duly authorised delegate) for the estate of the late [Claimant's Full Name] pursuant to Section 3(1)(f) of the Access to Health Records Act 1990 (AHRA).",
+ "",
+ "Please provide complete copies of records relating to the deceased's detention under Section 3 of the Mental Health Act 1983 and discharge covering [Start Date] to [Date of Death], including:",
+ "- Section 3 detention documentation (Forms A2, A3, and A4) and any renewal or extension records.",
+ "- Hospital inpatient notes, multidisciplinary care reviews, and the formal discharge summary and Section 117 aftercare plan.",
+ "",
+ "Please find attached copies of my proof of identity, proof of address, and [Select: Grant of Probate / Letters of Administration / Copy of the Will naming me as Executor / Signed Letter of Authority from Executor / Court Order].",
+ "",
+ "Under Section 3 of the Access to Health Records Act 1990, please provide these records free of charge in electronic format (PDF) within 40 calendar days. Please acknowledge receipt within five working days.",
+ "",
+ "Yours faithfully,",
+ "[Your Name]",
+ "[Your Telephone Number]"
+ ].join("\n"),
+
+ "1D": [
+ "To: [Care Home Accounts / Finance Email Address]",
+ "Subject: Subject Access Request: Historical Resident Fee Ledger & Invoices - [Claimant's Full Name] - DOB: [Claimant's DOB] - NHS No: [Claimant's NHS No.]",
+ "",
+ "Dear Finance and Accounts Team,",
+ "",
+ "I am writing as the authorised representative for [Claimant's Full Name] pursuant to Article 15 of the UK General Data Protection Regulation (UK GDPR) and Section 45 of the Data Protection Act 2018.",
+ "",
+ "Please provide a full breakdown of all care fees billed and paid from [Date of Section 117 Discharge] to [End Date or 'the present date'], including:",
+ "1. Full Historical Resident Ledger: Every invoice date, period of care covered, payments received, payer source, and running balance.",
+ "2. Copies of Historical Itemised Invoices: Distinguishing core care, accommodation, and nursing fees from any personal non-care extras.",
+ "",
+ "Please find attached copies of my proof of identity, proof of address, and [Select: Registered Lasting Power of Attorney / Court of Protection Deputyship Order / Signed Letter of Authority].",
+ "",
+ "Under UK GDPR and the Data Protection Act 2018, please provide these records free of charge in electronic format (PDF or Excel) within one calendar month. Please acknowledge receipt within five working days.",
+ "",
+ "Yours faithfully,",
+ "[Your Name]",
+ "[Your Telephone Number]"
+ ].join("\n"),
+
+ "1E": [
+ "To: [Care Home Accounts / Finance Email Address]",
+ "Subject: Request for Historical Resident Fee Ledger & Invoices - Estate of the Late [Claimant's Full Name] - DOB: [Claimant's DOB] - DOD: [Claimant's DOD]",
+ "",
+ "Dear Finance and Accounts Team,",
+ "",
+ "I am writing as the Personal Representative / Executor (or duly authorised delegate) for the estate of the late [Claimant's Full Name] regarding care provided by [Name of Care Home].",
+ "",
+ "Please provide a full breakdown of all care fees billed and paid from [Date of Section 117 Discharge] to [Date of Death], including:",
+ "1. Full Historical Resident Ledger: Every invoice date, period of care covered, payments received, payer source, and running balance.",
+ "2. Copies of Historical Itemised Invoices: Distinguishing core care, accommodation, and nursing fees from any personal non-care extras.",
+ "",
+ "Please find attached copies of my proof of identity, proof of address, and [Select: Grant of Probate / Letters of Administration / Copy of the Will naming me as Executor / Signed Letter of Authority from Executor / Court Order].",
+ "",
+ "Please supply these records in digital format (PDF or Excel) within 14 calendar days and acknowledge receipt within five working days.",
+ "",
+ "Yours faithfully,",
+ "[Your Name]",
+ "[Your Telephone Number]"
+ ].join("\n"),
+
+ "1F": [
+ "To: [Local Council Adult Social Care Finance / Section 117 Team Email Address]",
+ "Subject: URGENT: Billing Hold Notice - Section 117 Mental Health Aftercare - [Claimant's Full Name] - DOB: [Claimant's DOB] - NHS No: [Claimant's NHS No.]",
+ "",
+ "Dear Finance and Section 117 Commissioning Team,",
+ "",
+ "Formal Notice of Section 117 Statutory Duty: I write as the authorised representative for [Claimant's Full Name]. Following detention under Section 3 of the Mental Health Act 1983 at [Hospital Name] and discharge on [Date of Discharge] into [Name of Care Home / Placement], [Claimant's Full Name] is entitled to Section 117 aftercare services provided free of charge.",
+ "",
+ "Under Section 117(2) of the Mental Health Act 1983, Section 117 aftercare cannot be means-tested or charged to the individual. Please place an immediate hold on all care fee invoices and financial contributions billed to [Claimant's Full Name] from [Date of Discharge] onwards, confirm that future billing is suspended, and confirm joint funding arrangements with [Name of Integrated Care Board].",
+ "",
+ "Please find attached copies of my proof of identity, proof of address, and [Select: Registered Lasting Power of Attorney / Court of Protection Deputyship Order / Signed Letter of Authority].",
+ "",
+ "Please confirm in writing within seven calendar days that billing has been placed on hold.",
+ "",
+ "Yours faithfully,",
+ "[Your Name]",
+ "[Your Telephone Number]"
+ ].join("\n"),
+
+ "1G": [
+ "To: [Care Home Manager & Accounts Email Address]",
+ "Subject: URGENT: Billing Hold Notice - Section 117 Mental Health Aftercare - [Claimant's Full Name] - DOB: [Claimant's DOB] - NHS No: [Claimant's NHS No.]",
+ "",
+ "Dear Care Home Manager and Accounts Team,",
+ "",
+ "Formal Notice of Section 117 Aftercare Entitlement: I write as the authorised representative for [Claimant's Full Name]. Following detention under Section 3 of the Mental Health Act 1983 at [Hospital Name] and discharge into [Name of Care Home] on [Date of Discharge], [Claimant's Full Name] is entitled to Section 117 aftercare services free of charge.",
+ "",
+ "Please place an immediate billing hold on private self-funded fee invoices issued to [Claimant's Full Name] while Section 117 funding responsibility is confirmed with [Name of Local Council] and [Name of Integrated Care Board], and provide a full statement of fees paid to date.",
+ "",
+ "Please find attached copies of my proof of identity, proof of address, and [Select: Registered Lasting Power of Attorney / Court of Protection Deputyship Order / Signed Letter of Authority].",
+ "",
+ "Please confirm receipt and your billing hold within seven calendar days.",
+ "",
+ "Yours faithfully,",
+ "[Your Name]",
+ "[Your Telephone Number]"
+ ].join("\n"),
+
+ "1H": [
+ "To: [Integrated Care Board Email Address]; [Local Council Email Address]",
+ "Subject: FORMAL SECTION 117 REFUND CLAIM - [Claimant's Full Name] - DOB: [Claimant's DOB] - NHS No: [Claimant's NHS No.]",
+ "",
+ "Dear Chief Executives, Section 151 Officer, and Section 117 Commissioning Leads,",
+ "",
+ "Formal Claim for Section 117 Reimbursement: I write as the authorised representative for [Claimant's Full Name] (or the estate of the late [Claimant's Full Name], DOD: [Claimant's DOD]).",
+ "",
+ "On [Date of Section 3 Detention], [Claimant's Full Name] was detained under Section 3 of the Mental Health Act 1983 at [Hospital Name] and discharged on [Date of Discharge] into [Name of Care Home / Placement]. Under Section 117(2) of the Mental Health Act 1983, the Integrated Care Board and Local Authority have a joint, non-means-tested duty to provide Section 117 aftercare services free of charge.",
+ "",
+ "Despite this statutory duty, care fees totalling [Total Amount Claimed] were charged and paid between [Start Date] and [End Date]. I formally claim full reimbursement of [Total Amount Claimed], together with statutory interest, within 28 calendar days [and immediate cessation of ongoing charges if living].",
+ "",
+ "Attached: Proof of identity, proof of address, [Legal Authority Document], Section 3 detention/discharge records, and care fee ledger/invoices.",
+ "",
+ "Please acknowledge receipt within five working days.",
+ "",
+ "Yours faithfully,",
+ "[Your Name]",
+ "[Your Telephone Number]"
+ ].join("\n"),
+
+ "1I": [
+ "To: [Council / ICB Offer Sender Email Address]",
+ "Subject: REJECTION OF PARTIAL OFFER - Section 117 Refund Claim - [Claimant's Full Name] - DOB: [Claimant's DOB] - NHS No: [Claimant's NHS No.]",
+ "",
+ "Dear [Name of Sender / Commissioning Lead],",
+ "",
+ "Thank you for your letter/email dated [Date of Offer] offering [Amount Offered] in settlement of the Section 117 aftercare refund claim for [Claimant's Full Name].",
+ "",
+ "I formally reject this partial offer. Under Section 117(2) of the Mental Health Act 1983, Section 117 aftercare is a statutory duty provided free of charge with no means testing or partial fee splits. The full unlawful charge paid between [Start Date] and [End Date] is [Total Amount Claimed], plus statutory interest.",
+ "",
+ "Please pay the full balance of [Total Amount Claimed] plus statutory interest within 14 calendar days, failing which I will escalate to formal dispute resolution / the Joint Ombudsman (LGSCO & PSO, formerly PHSO).",
+ "",
+ "Yours faithfully,",
+ "[Your Name]",
+ "[Your Telephone Number]"
+ ].join("\n"),
+
+ "1J": [
+ "To: [Integrated Care Board Email Address]; [Local Council Email Address]",
+ "Subject: FIRST CHASE: Overdue Section 117 Refund Claim - [Claimant's Full Name] - DOB: [Claimant's DOB] - NHS No: [Claimant's NHS No.]",
+ "",
+ "Dear Section 117 Commissioning Leads,",
+ "",
+ "I write following my formal Section 117 refund claim submitted on [Date of Initial Claim] regarding [Claimant's Full Name] for [Total Amount Claimed] covering [Start Date] to [End Date].",
+ "",
+ "To date, I have not received full payment or a substantive lawful response. Please confirm the status of this claim and arrange full settlement within 14 calendar days, or I will issue a Final Demand / Letter Before Action.",
+ "",
+ "Yours faithfully,",
+ "[Your Name]",
+ "[Your Telephone Number]"
+ ].join("\n"),
+
+ "1K": [
+ "To: [Chief Executive & Section 151 Officer Email Addresses - Council & ICB]",
+ "Subject: FINAL DEMAND / LETTER BEFORE ACTION: Unlawful Section 117 Charging - [Claimant's Full Name] - DOB: [Claimant's DOB] - NHS No: [Claimant's NHS No.]",
+ "",
+ "Dear Chief Executives and Section 151 Officer,",
+ "",
+ "Formal Final Demand: Despite my initial Section 117 claim sent on [Date of Initial Claim] and follow-up chase on [Date of First Chase], [Total Amount Claimed] in care charges paid between [Start Date] and [End Date] following Section 3 detention at [Hospital Name] remains unpaid.",
+ "",
+ "Under Section 117(2) of the Mental Health Act 1983, charging for Section 117 aftercare is unlawful. Please make full payment of [Total Amount Claimed] plus statutory interest within 7 calendar days of this Final Demand. If not resolved within 7 calendar days, I will refer this matter to the Local Government and Social Care Ombudsman (LGSCO) and Public Services Ombudsman (PSO, formerly PHSO) Joint Working Team without further notice.",
+ "",
+ "Yours faithfully,",
+ "[Your Name]",
+ "[Your Telephone Number]"
+ ].join("\n"),
+
+ "3A": [
+ "To: [Insert Recipient Email Address]",
+ "Subject: Statutory Request for Access to Personal Data and Health Records - [Claimant's Full Name] - DOB: [Claimant's DOB] - NHS No: [Claimant's NHS No.]",
+ "",
+ "Dear Data Protection Officer / Practice Manager,",
+ "",
+ "Formal Notice of Request: I write as the authorised representative in relation to the records held by your organisation regarding the above-named individual. Formal notice is hereby given requiring your organisation to provide all clinical, nursing, care, and administrative records covering the period from [Start Date] to [End Date], pursuant to Article 15 of the UK General Data Protection Regulation (UK GDPR) and Section 45 of the Data Protection Act 2018.",
+ "",
+ "Specifically, please provide complete copies of all information held regarding the claimant, including (where applicable to your organisation):",
+ SCOPE_BULLETS,
+ "",
+ "This historical timeframe and record scope are essential for compiling a complete evidence bundle for NHS Continuing Healthcare (CHC) and Previously Unassessed Periods of Care (PUPoC) funding assessments and retrospective reviews.",
+ "",
+ "Verification of Identity and Legal Authority: To prevent administrative delay, please find attached copies of my proof of identity, proof of address, and a copy of my [Select: Registered Lasting Power of Attorney / Court of Protection Deputyship Order / Signed Letter of Authority] confirming my explicit legal authority to access these records.",
+ "",
+ "Statutory Timeframes and Delivery: Under the statutory provisions cited above, your organisation is legally required to provide the requested records free of charge, in a secure electronic format (such as encrypted PDF), and strictly within one calendar month of receipt. Failure to comply within the statutory window constitutes a breach of statutory duty and may result in immediate referral to the Information Commissioner's Office (ICO). Please acknowledge receipt within five working days.",
+ "",
+ "Yours faithfully,",
+ "[Your Name]",
+ "[Your Telephone Number]"
+ ].join("\n"),
+
+ "3B": [
+ "To: [Insert Recipient Email Address]",
+ "Subject: Request for Access to Medical and Care Records - [Claimant's Full Name] - DOB: [Claimant's DOB] - NHS No: [Claimant's NHS No.]",
+ "",
+ "Dear Practice Manager / Team,",
+ "",
+ "I am writing to formally request copies of all health, care, and administrative records held by your organisation regarding the above-named individual covering the period from [Start Date] to [End Date].",
+ "",
+ "This request is made under Article 15 of the UK General Data Protection Regulation (UK GDPR) and Section 45 of the Data Protection Act 2018. To assist with prompt processing, I have attached copies of my proof of identity, proof of address, and my [Select: Registered Lasting Power of Attorney / Court of Protection Deputyship Order / Signed Letter of Authority] confirming my legal authority to act.",
+ "",
+ "To ensure our records are complete for NHS Continuing Healthcare (CHC) and Previously Unassessed Periods of Care (PUPoC) funding assessments, please include all information held regarding the claimant, including (where applicable to your organisation):",
+ SCOPE_BULLETS,
+ "",
+ "As you will be aware, organisations are legally required to provide these records free of charge within one calendar month of verifying identity and legal authority. Please confirm safe receipt of this email and supply the records in a secure electronic format (such as PDF) within the statutory timeframe. Thank you very much for your help and cooperation.",
+ "",
+ "Kind regards,",
+ "[Your Name]",
+ "[Your Telephone Number]"
+ ].join("\n"),
+
+ "3C": [
+ "To: [Care Home Accounts / Care Agency Finance / Council Finance Email Address]",
+ "Subject: Subject Access Request: Historical Fee Ledger & Invoices - [Claimant's Full Name] - DOB: [Claimant's DOB] - NHS No: [Claimant's NHS No.]",
+ "",
+ "Dear Finance and Accounts Team,",
+ "",
+ "I am writing as the authorised representative for [Claimant's Full Name] pursuant to Article 15 of the UK General Data Protection Regulation (UK GDPR) and Section 45 of the Data Protection Act 2018 regarding care provided by [Name of Care Home / Care Agency / Council].",
+ "",
+ "I am compiling a retrospective NHS Continuing Healthcare (CHC) / Previously Unassessed Periods of Care (PUPoC) funding audit and require a full breakdown of all care fees billed and paid from [Start Date] to [End Date or 'the present date']. Please supply the following financial records free of charge within one calendar month:",
+ "1. Full Historical Resident / Client Ledger: A complete statement of account showing every invoice date, the period of care covered, payments received, payer source (self-funded, family top-up, NHS Funded Nursing Care, or Local Authority contribution), and the running balance.",
+ "2. Copies of Historical Itemised Invoices: Copies of all invoices clearly distinguishing core care, accommodation, and nursing fees from any personal non-care extras (such as hairdressing, chiropody, or newspapers).",
+ "3. Financial Assessments (if held by Local Authority): Copies of all financial assessment determinations, means-test calculations, and contribution notices issued during the period.",
+ "",
+ "To verify my legal standing to access these financial records, please find attached copies of my proof of identity, proof of address, and [Select: Registered Lasting Power of Attorney / Court of Protection Deputyship Order / Signed Letter of Authority].",
+ "",
+ "Please supply these records in digital format (PDF or Excel spreadsheet) directly to this email address.",
+ "",
+ "Yours faithfully,",
+ "[Your Name]",
+ "[Your Telephone Number]"
+ ].join("\n"),
+
+ "4A": [
+ "To: [Insert Recipient Email Address]",
+ "Subject: Statutory Request under Access to Health Records Act 1990 - Estate of the Late [Claimant's Full Name] - DOB: [Claimant's DOB] - DOD: [Claimant's DOD]",
+ "",
+ "Dear Access to Health Records Team / Practice Manager,",
+ "",
+ "Formal Notice of Request: I write as the Personal Representative / Executor (or duly authorised delegate) for the estate of the late [Claimant's Full Name]. Formal notice is hereby given requiring your organisation to provide copies of all clinical, nursing, care, and administrative records held regarding the deceased covering the period from [Start Date] to [Date of Death], pursuant to Section 3(1)(f) of the Access to Health Records Act 1990 (AHRA).",
+ "",
+ "Specifically, please provide complete copies of all records held regarding the deceased, including (where applicable to your organisation):",
+ SCOPE_BULLETS,
+ "",
+ "This historical timeframe and record scope are required to pursue a retrospective NHS Continuing Healthcare (CHC) / Previously Unassessed Periods of Care (PUPoC) care fee recovery claim on behalf of the estate.",
+ "",
+ "Verification of Identity and Estate Authority: To prevent administrative delay, please find attached copies of my proof of identity, proof of address, and a copy of [Select: Grant of Probate / Letters of Administration / Copy of the Will naming me as Executor / Signed Letter of Authority from Executor / Court Order] confirming my legal standing to access these records.",
+ "",
+ "Statutory Timeframe and Delivery: Under Section 3 of the Access to Health Records Act 1990, your organisation is legally required to provide the requested records free of charge, in a secure electronic format (such as encrypted PDF), and within 40 calendar days of receipt. Please acknowledge receipt within five working days.",
+ "",
+ "Yours faithfully,",
+ "[Your Name]",
+ "[Your Telephone Number]"
+ ].join("\n"),
+
+ "4B": [
+ "To: [Insert Recipient Email Address]",
+ "Subject: Access to Health Records Request - Estate of the Late [Claimant's Full Name] - DOB: [Claimant's DOB] - DOD: [Claimant's DOD]",
+ "",
+ "Dear Practice Manager / Team,",
+ "",
+ "I am writing to formally request copies of all health, care, and administrative records held by your organisation regarding the late [Claimant's Full Name] covering the period from [Start Date] to [Date of Death].",
+ "",
+ "This request is made under Section 3(1)(f) of the Access to Health Records Act 1990 (AHRA) on behalf of the estate. To assist with prompt processing, I have attached copies of my proof of identity, proof of address, and [Select: Grant of Probate / Letters of Administration / Copy of the Will naming me as Executor / Signed Letter of Authority from Executor / Court Order] confirming my legal authority to act.",
+ "",
+ "To ensure our records are complete for a retrospective NHS Continuing Healthcare (CHC) / Previously Unassessed Periods of Care (PUPoC) review for the estate, please include all records held regarding the deceased, including (where applicable to your organisation):",
+ SCOPE_BULLETS,
+ "",
+ "Under the Access to Health Records Act 1990, organisations are required to provide these records free of charge within 40 calendar days of verifying identity and legal standing. Please confirm safe receipt of this email and supply the records in a secure electronic format (such as PDF) within the 40-day timeframe. Thank you very much for your help and cooperation.",
+ "",
+ "Kind regards,",
+ "[Your Name]",
+ "[Your Telephone Number]"
+ ].join("\n"),
+
+ "4C": [
+ "To: [Care Home Accounts / Care Agency Finance / Council Finance Email Address]",
+ "Subject: Request for Historical Fee Ledger & Invoices - Estate of the Late [Claimant's Full Name] - DOB: [Claimant's DOB] - DOD: [Claimant's DOD]",
+ "",
+ "Dear Finance and Accounts Team,",
+ "",
+ "I am writing as the Personal Representative / Executor (or duly authorised delegate) for the estate of the late [Claimant's Full Name] regarding care provided by [Name of Care Home / Care Agency / Council].",
+ "",
+ "I am compiling a retrospective NHS Continuing Healthcare (CHC) / Previously Unassessed Periods of Care (PUPoC) funding audit for the estate and require a full breakdown of all care fees billed and paid from [Start Date] to [Date of Death]. Please supply the following financial records within 14 calendar days:",
+ "1. Full Historical Resident / Client Ledger: A complete statement of account showing every invoice date, the period of care covered, payments received, payer source (self-funded, family top-up, NHS Funded Nursing Care, or Local Authority contribution), and the running balance.",
+ "2. Copies of Historical Itemised Invoices: Copies of all invoices clearly distinguishing core care, accommodation, and nursing fees from any personal non-care extras (such as hairdressing, chiropody, or newspapers).",
+ "3. Financial Assessments (if held by Local Authority): Copies of all financial assessment determinations, means-test calculations, and contribution notices issued during the period.",
+ "",
+ "To verify my legal standing to access these estate financial records, please find attached copies of my proof of identity, proof of address, and [Select: Grant of Probate / Letters of Administration / Copy of the Will naming me as Executor / Signed Letter of Authority from Executor / Court Order].",
+ "",
+ "Please supply these records in digital format (PDF or Excel spreadsheet) directly to this email address.",
+ "",
+ "Yours faithfully,",
+ "[Your Name]",
+ "[Your Telephone Number]"
+ ].join("\n"),
+
+ "5A": [
+ "To: [Insert Recipient Email Address]",
+ "Subject: OVERDUE STATUTORY DATA REQUEST / FIRST CHASE: Access to Records - [Claimant's Full Name] - DOB: [Claimant's DOB] - NHS No: [Claimant's NHS No.] - Ref: [Case Reference, if received]",
+ "",
+ "Dear Data Protection Officer / Practice Manager,",
+ "",
+ "First Formal Chase - Overdue Statutory Request: I write further to my initial statutory records request submitted on [Original Request Date] regarding the above-named individual (reference: [Reference Number, or 'None Provided']).",
+ "",
+ "Statutory Breach and Urgent Compliance Required: Under [Select: Article 15 UK GDPR & Section 45 Data Protection Act 2018 / Section 3 Access to Health Records Act 1990], your organisation was legally required to provide the complete records package within the statutory timeframe, which expired on [Statutory Deadline Date]. To date, no complete disclosure or valid statutory extension notice has been received. This ongoing failure constitutes a breach of statutory duty.",
+ "",
+ "Immediate Action Required: Please treat this email as a formal first chase. You are required to confirm immediate status and deliver the requested records securely within seven working days. Continued failure to comply will result in formal escalation and regulatory referral.",
+ "",
+ "I look forward to your urgent confirmation today.",
+ "",
+ "Yours faithfully,",
+ "[Your Name]",
+ "[Your Telephone Number]"
+ ].join("\n"),
+
+ "5B": [
+ "To: [Insert Recipient Email Address]",
+ "Subject: FINAL NOTICE: Overdue Statutory Request for Access to Records - [Claimant's Full Name] - DOB: [Claimant's DOB] - NHS No: [Claimant's NHS No.] - Ref: [Case Reference, if received]",
+ "",
+ "Dear Data Protection Officer / Practice Manager,",
+ "",
+ "Final Notice of Statutory Breach: I write with reference to my initial statutory data request submitted on [Original Request Date] and my subsequent follow-up chase sent on [First Chase Date], regarding the records held for the above-named individual (reference: [Reference Number, or 'None Provided']).",
+ "",
+ "Severe Breach of Statutory Duty: Your organisation has now significantly exceeded the statutory response window stipulated under [Select: Article 15 UK GDPR & Section 45 Data Protection Act 2018 / Section 3 Access to Health Records Act 1990]. Despite formal notice and ample opportunity to comply, no complete records package has been provided. This failure represents a serious breach of statutory duty.",
+ "",
+ "Final Deadline Prior to Escalation: Please treat this communication as a final notice. You are required to deliver the complete, secure data package within three working days of this email (by [Final Deadline Date]). If these records are not received by this deadline, this matter will be escalated immediately to the Information Commissioner's Office (ICO) / formal regulatory complaints body for enforcement action, alongside notification to the Integrated Care Board regarding the impact on statutory Continuing Healthcare (CHC) and Previously Unassessed Periods of Care (PUPoC) proceedings.",
+ "",
+ "I expect your immediate confirmation of receipt and dispatch today.",
+ "",
+ "Yours faithfully,",
+ "[Your Name]",
+ "[Your Telephone Number]"
+ ].join("\n")
+ };
+
+ const nodes = {
+ start: {
+ type: "question",
+ folder: "Step 1: Choose Your Funding Route",
+ question: "Which type of funding claim are you preparing?",
+ description: "Select the route that matches your relative's history so we can take you straight to the exact letters you need.",
+ options: [
+ {
+ label: "Section 117 Mental Health Act Aftercare",
+ sub: "Check first: The person was previously detained in hospital under Section 3 of the Mental Health Act 1983.",
+ next: "s117_stage"
+ },
+ {
+ label: "NHS Continuing Healthcare (CHC) or PUPoC Retrospective Claim",
+ sub: "Standard CHC funding assessments or reclaiming care fees paid during an unassessed period of care.",
+ next: "chc_task"
+ }
+ ]
+ },
+
+ chc_task: {
+ type: "question",
+ folder: "Step 2: CHC & PUPoC Route",
+ question: "What do you need to do right now?",
+ description: "Choose the stage you are currently working on:",
+ options: [
+ {
+ label: "1. Establish Legal Authority to Act",
+ sub: "You do not yet have a registered Lasting Power of Attorney, Deputyship Order, or Grant of Probate in your own name.",
+ next: "result_delegation_path"
+ },
+ {
+ label: "2. Request Medical, Care & Financial Records",
+ sub: "You already hold legal authority and are ready to gather records from GPs, care homes, hospitals, councils, or the ICB.",
+ next: "chc_status"
+ },
+ {
+ label: "3. Chase or Escalate Overdue Records",
+ sub: "An organisation has missed its statutory deadline (1 calendar month for living, 40 days for deceased) or refused disclosure.",
+ next: "result_escalation"
+ }
+ ]
+ },
+
+ chc_status: {
+ type: "question",
+ folder: "Step 3: Claimant Status",
+ question: "Is the person you are claiming for still living or deceased?",
+ description: "Different UK laws and deadlines apply depending on whether the claimant is living or deceased.",
+ options: [
+ {
+ label: "Living Claimant",
+ sub: "Requests are made under UK GDPR & Data Protection Act 2018 (1 calendar month statutory deadline).",
+ next: "step4_living_track"
+ },
+ {
+ label: "Deceased Claimant",
+ sub: "Health records are requested under the Access to Health Records Act 1990 (40 calendar days statutory deadline).",
+ next: "step4_deceased_track"
+ }
+ ]
+ },
+
+ result_delegation_path: {
+ type: "terminal",
+ tipMode: "form",
+ folder: "Folder 02: Delegation",
+ question: "Your Action Plan: Establish Legal Authority",
+ description: "Put formal authority in place before sending out requests for medical, care, or financial records.",
+ boxes: [
+ {
+ title: "Delegation & Legal Authority Pack",
+ file: "Delegation.pdf",
+ href: "Packs/02 Delegation/Delegation.pdf",
+ body: "Open <span class='folder-text'>Delegation.pdf</span> from <span class='folder-text'>Packs / 02 Delegation</span>. Page 1 sets out how to use the pack (plus a ready-to-copy cover email for solicitors or professional executors), Page 2 is the fillable Letter of Authority for a living claimant with capacity, and Page 3 is the fillable form for a deceased estate."
+ },
+ {
+ title: "Saving Time",
+ file: "",
+ body: "While waiting for signed authority, prepare your email requests now so you can attach the signed page and send immediately.",
+ isHighlight: true
+ }
+ ]
+ },
+
+ step4_living_track: {
+ type: "terminal",
+ tipMode: "email",
+ folder: "Folder 03: Evidence Living",
+ question: "Your Action Plan: Request Care & Financial Records",
+ description: "Open the PDF or copy the email text directly from <span class='folder-text'>Packs / 03 Evidence Living</span>:",
+ trackerHref: "tracker.html?basis=SAR",
+ boxes: [
+ {
+ title: "3A SAR Firm (Subject Access Request)",
+ file: "3A SAR Firm.pdf",
+ href: "Packs/03 Evidence Living/3A SAR Firm.pdf",
+ emailKey: "3A",
+ body: "Firm statutory request for ICBs, councils, hospitals, or slow providers."
+ },
+ {
+ title: "3B SAR Gentle (Subject Access Request)",
+ file: "3B SAR Gentle.pdf",
+ href: "Packs/03 Evidence Living/3B SAR Gentle.pdf",
+ emailKey: "3B",
+ body: "Friendly, cooperative request for your GP surgery or current care home."
+ },
+ {
+ title: "3C Financial Records",
+ file: "3C Financial Records.pdf",
+ href: "Packs/03 Evidence Living/3C Financial Records.pdf",
+ emailKey: "3C",
+ body: "Formal request for care fee ledgers, itemised invoices, and financial assessments."
+ }
+ ]
+ },
+
+ step4_deceased_track: {
+ type: "terminal",
+ tipMode: "email",
+ folder: "Folder 04: Evidence Deceased",
+ question: "Your Action Plan: Request Estate Medical & Financial Records",
+ description: "Open the PDF or copy the email text directly from <span class='folder-text'>Packs / 04 Evidence Deceased</span>:",
+ trackerHref: "tracker.html?basis=AHRA",
+ boxes: [
+ {
+ title: "4A AHRA Firm (Access to Health Records Act)",
+ file: "4A AHRA Firm.pdf",
+ href: "Packs/04 Evidence Deceased/4A AHRA Firm.pdf",
+ emailKey: "4A",
+ body: "Firm statutory request for ICBs, councils, hospitals, or slow providers."
+ },
+ {
+ title: "4B AHRA Gentle (Access to Health Records Act)",
+ file: "4B AHRA Gentle.pdf",
+ href: "Packs/04 Evidence Deceased/4B AHRA Gentle.pdf",
+ emailKey: "4B",
+ body: "Friendly, cooperative request for the GP surgery or care home."
+ },
+ {
+ title: "4C Estate Records",
+ file: "4C Estate Records.pdf",
+ href: "Packs/04 Evidence Deceased/4C Estate Records.pdf",
+ emailKey: "4C",
+ body: "Formal request for historical care fee ledgers, itemised invoices, and financial assessments."
+ }
+ ]
+ },
+
+ result_escalation: {
+ type: "terminal",
+ tipMode: "email",
+ folder: "Folder 05: Escalation",
+ question: "Your Action Plan: Escalate Overdue or Refused Records",
+ description: "Open the PDF or copy the email text directly from <span class='folder-text'>Packs / 05 Escalation</span>:",
+ trackerHref: "tracker.html",
+ boxes: [
+ {
+ title: "5A Chase",
+ file: "5A Chase.pdf",
+ href: "Packs/05 Escalation/5A Chase.pdf",
+ emailKey: "5A",
+ body: "First follow-up email when an organisation misses the statutory deadline."
+ },
+ {
+ title: "5B Final Demand",
+ file: "5B Final Demand.pdf",
+ href: "Packs/05 Escalation/5B Final Demand.pdf",
+ emailKey: "5B",
+ body: "Formal 3-working-day final notice before reporting a continued delay to the regulator."
+ },
+ {
+ title: "5C ICO",
+ file: "5C ICO.pdf",
+ href: "Packs/05 Escalation/5C ICO.pdf",
+ body: "Information Commissioner's Office (ICO) complaint walkthrough and supporting statement."
+ },
+ {
+ title: "Claiming under Section 117?",
+ file: "",
+ body: "If the person was detained under Section 3, do not use these letters. Go back to the start, choose Section 117 Aftercare, and open <span class='folder-text'>1.5 Escalate</span>.",
+ isHighlight: true
+ }
+ ]
+ },
+
+ s117_stage: {
+ type: "question",
+ folder: "Folder 01: Section 117 Aftercare",
+ question: "Which stage of your Section 117 claim are you on?",
+ description: "Follow stages 1.1 to 1.5 in order. Folder 01 contains every letter you need from start to finish.",
+ options: [
+ {
+ label: "Stage 1.1: Establish Legal Authority (Delegation)",
+ sub: "Fill in and sign a Letter of Authority from a living claimant or estate executor.",
+ next: "s117_delegation"
+ },
+ {
+ label: "Stage 1.2: Gather Hospital Detention & Care Ledger Evidence",
+ sub: "Request Section 3 detention papers, hospital discharge summary, and care home fee ledgers.",
+ next: "s117_evidence"
+ },
+ {
+ label: "Stage 1.3: Stop Ongoing Care Fees (Living in Care Only)",
+ sub: "Serve immediate billing hold notices on the council or care home while funding transfers.",
+ next: "s117_stop_fees"
+ },
+ {
+ label: "Stage 1.4: Submit Formal Section 117 Refund Claim",
+ sub: "Serve your formal claim on the ICB and Council, or reject a low 'goodwill' partial offer.",
+ next: "s117_claim"
+ },
+ {
+ label: "Stage 1.5: Chase, Final Demand & Joint Ombudsman Escalation",
+ sub: "Escalate unpaid claims after 14-28 days or submit a joint complaint to the LGSCO & PSO (formerly PHSO).",
+ next: "s117_escalate"
+ }
+ ]
+ },
+
+ s117_delegation: {
+ type: "terminal",
+ tipMode: "form",
+ folder: "Folder 01: 1.1 Delegation",
+ question: "Stage 1.1: Establish Legal Authority",
+ description: "Put formal authority in place before sending out requests for detention, hospital, or care fee records.",
+ boxes: [
+ {
+ title: "1A Delegation & Legal Authority Pack",
+ file: "1A Delegation.pdf",
+ href: "Packs/01 Sectioned/1.1 Delegation/1A Delegation.pdf",
+ body: "Open <span class='folder-text'>1A Delegation.pdf</span> from <span class='folder-text'>Packs / 01 Sectioned / 1.1 Delegation</span>. Page 1 sets out how to use the pack (including guidance if a living claimant is still detained or lacks capacity, plus a cover email for solicitors), Page 2 is the fillable Letter of Authority for a living claimant with capacity, and Page 3 is the fillable form for a deceased estate."
+ },
+ {
+ title: "Saving Time",
+ file: "",
+ body: "While waiting for signed authority, prepare your Stage 1.2 record requests (or Stage 1.3 Billing Hold Notices if the claimant is living in care) so you can send them immediately.",
+ isHighlight: true
+ }
+ ]
+ },
+
+ s117_evidence: {
+ type: "terminal",
+ tipMode: "email",
+ folder: "Folder 01: 1.2 Evidence Gathering",
+ question: "Stage 1.2: Gather Section 3 & Care Fee Evidence",
+ description: "Open the PDF or copy the email text directly from <span class='folder-text'>Packs / 01 Sectioned / 1.2 Evidence Gathering</span>:",
+ trackerHref: "tracker.html",
+ boxes: [
+ {
+ title: "1B Hospital Record Request (Living)",
+ file: "1B Hospital Record Request Living.pdf",
+ href: "Packs/01 Sectioned/1.2 Evidence Gathering/1B Hospital Record Request Living.pdf",
+ emailKey: "1B",
+ body: "Request Section 3 detention papers (Forms A2, A3, A4) and discharge summary under UK GDPR & Data Protection Act 2018."
+ },
+ {
+ title: "1C Hospital Record Request (Deceased)",
+ file: "1C Hospital Record Request Deceased.pdf",
+ href: "Packs/01 Sectioned/1.2 Evidence Gathering/1C Hospital Record Request Deceased.pdf",
+ emailKey: "1C",
+ body: "Request Section 3 detention papers (Forms A2, A3, A4) and discharge summary under the Access to Health Records Act 1990."
+ },
+ {
+ title: "1D Care Home Ledger Request (Living)",
+ file: "1D Care Home Ledger Request Living.pdf",
+ href: "Packs/01 Sectioned/1.2 Evidence Gathering/1D Care Home Ledger Request Living.pdf",
+ emailKey: "1D",
+ body: "Request the full resident ledger and itemised invoices from the exact date of hospital discharge."
+ },
+ {
+ title: "1E Care Home Ledger Request (Deceased)",
+ file: "1E Care Home Ledger Request Deceased.pdf",
+ href: "Packs/01 Sectioned/1.2 Evidence Gathering/1E Care Home Ledger Request Deceased.pdf",
+ emailKey: "1E",
+ body: "Request the estate's historical resident ledger and itemised invoices from the exact date of hospital discharge."
+ }
+ ]
+ },
+
+ s117_stop_fees: {
+ type: "terminal",
+ tipMode: "email",
+ folder: "Folder 01: 1.3 Stop Ongoing Fees",
+ question: "Stage 1.3: Stop Ongoing Care Fees (Living in Care Only)",
+ description: "Open the PDF or copy the email text directly from <span class='folder-text'>Packs / 01 Sectioned / 1.3 Stop Ongoing Fees</span>:",
+ boxes: [
+ {
+ title: "1F Council Billing Hold Notice",
+ file: "1F Council Billing Hold Notice.pdf",
+ href: "Packs/01 Sectioned/1.3 Stop Ongoing Fees/1F Council Billing Hold Notice.pdf",
+ emailKey: "1F",
+ body: "Send to Local Council Finance if the council is invoicing directly for Section 117 aftercare."
+ },
+ {
+ title: "1G Care Home Billing Hold Notice",
+ file: "1G Care Home Billing Hold Notice.pdf",
+ href: "Packs/01 Sectioned/1.3 Stop Ongoing Fees/1G Care Home Billing Hold Notice.pdf",
+ emailKey: "1G",
+ body: "Send to the Care Home Manager and Accounts team if paying under a private self-funded contract."
+ },
+ {
+ title: "Claimant Deceased?",
+ file: "",
+ body: "If the claimant has passed away, skip Stage 1.3 and go straight to <span class='folder-text'>Stage 1.4: Submit Formal Section 117 Refund Claim</span>.",
+ isHighlight: true
+ }
+ ]
+ },
+
+ s117_claim: {
+ type: "terminal",
+ tipMode: "email",
+ folder: "Folder 01: 1.4 Claim",
+ question: "Stage 1.4: Submit Section 117 Refund Claim",
+ description: "Open the PDF or copy the email text directly from <span class='folder-text'>Packs / 01 Sectioned / 1.4 Claim</span>:",
+ boxes: [
+ {
+ title: "1H Section 117 Refund Claim",
+ file: "1H Claim.pdf",
+ href: "Packs/01 Sectioned/1.4 Claim/1H Claim.pdf",
+ emailKey: "1H",
+ body: "Formal joint claim to the ICB and Local Authority demanding full reimbursement of unlawfully charged fees."
+ },
+ {
+ title: "1I Reject Offer",
+ file: "1I Reject Offer.pdf",
+ href: "Packs/01 Sectioned/1.4 Claim/1I Reject Offer.pdf",
+ emailKey: "1I",
+ body: "Use immediately if the council or ICB offers a partial 'goodwill' settlement instead of 100% repayment."
+ }
+ ]
+ },
+
+ s117_escalate: {
+ type: "terminal",
+ tipMode: "email",
+ folder: "Folder 01: 1.5 Escalate",
+ question: "Stage 1.5: Chase, Final Demand & Ombudsman Escalation",
+ description: "Escalate in order using the templates in <span class='folder-text'>Packs / 01 Sectioned / 1.5 Escalate</span>:",
+ boxes: [
+ {
+ title: "1J First Chase",
+ file: "1J First Chase.pdf",
+ href: "Packs/01 Sectioned/1.5 Escalate/1J First Chase.pdf",
+ emailKey: "1J",
+ body: "Send 14 to 21 days after your initial claim if they have not replied or paid in full."
+ },
+ {
+ title: "1K Final Demand",
+ file: "1K Final Demand.pdf",
+ href: "Packs/01 Sectioned/1.5 Escalate/1K Final Demand.pdf",
+ emailKey: "1K",
+ body: "Formal Letter Before Action at 28 days putting the Chief Executive and Section 151 Officer on notice."
+ },
+ {
+ title: "1L Ombudsman Guide & Supporting Statement",
+ file: "1L Ombudsman.pdf",
+ href: "Packs/01 Sectioned/1.5 Escalate/1L Ombudsman.pdf",
+ body: "Step-by-step walkthrough and supporting statement for a joint LGSCO & PSO (formerly PHSO) Ombudsman complaint."
+ }
+ ]
+ }
+ };
+
+ let historyStack = ["start"];
+
+ function copyEmailTemplate(btnEl, key) {
+ const text = emailTemplates[key];
+ if (!text) return;
+
+ const showCopied = () => {
+ const original = btnEl.textContent;
+ btnEl.textContent = "Copied!";
+ btnEl.classList.add("copied");
+ setTimeout(() => {
+ btnEl.textContent = original;
+ btnEl.classList.remove("copied");
+ }, 2000);
+ };
+
+ if (navigator.clipboard && window.isSecureContext) {
+ navigator.clipboard.writeText(text).then(showCopied).catch(() => fallbackCopy(text, showCopied));
+ } else {
+ fallbackCopy(text, showCopied);
+ }
+ }
+
+ function fallbackCopy(text, callback) {
+ const ta = document.createElement("textarea");
+ ta.value = text;
+ ta.style.position = "fixed";
+ ta.style.left = "-9999px";
+ document.body.appendChild(ta);
+ ta.select();
+ try {
+ document.execCommand("copy");
+ if (callback) callback();
+ } catch (e) {
+ alert("Please open the PDF to copy the email text.");
+ }
+ document.body.removeChild(ta);
+ }
+
+ function renderCurrentNode() {
+ const nodeId = historyStack[historyStack.length - 1];
+ const node = nodes[nodeId];
+ const badgeEl = document.getElementById("folderBadge");
+ const navEl = document.getElementById("navControls");
+ const contentEl = document.getElementById("routeContent");
+ const tipsEl = document.getElementById("quickTipsBox");
+
+ badgeEl.textContent = node.folder;
+ navEl.style.display = historyStack.length > 1 ? "flex" : "none";
+
+ if (node.tipMode === "form") {
+ tipsEl.innerHTML = "<strong>How to use this pack:</strong> Click <strong>Open PDF</strong> to open the pack in your browser. Read the track instructions on Page 1, type your details straight into the shaded boxes on Page 2 (living) or Page 3 (deceased), print only that single form page to sign in ink, and scan or photograph it to attach to your emails.";
+ } else if (node.tipMode === "email") {
+ tipsEl.innerHTML = "<strong>How to use these templates:</strong> Click <strong>Open PDF</strong> to view the full guide and attachment checklist, or click <strong>Copy Email Text</strong> (where shown) to copy the ready-to-paste email straight to your clipboard. Replace every <strong>[bracketed placeholder]</strong> (shown in red on the PDFs) with your details before sending.";
+ } else {
+ tipsEl.innerHTML = "<strong>How this Route Finder works:</strong> Select the option above that matches your situation to jump straight to the exact letters, forms, and tracker you need.";
+ }
+
+ let html = `<h2 class="question-title">${node.question}</h2>`;
+ html += `<p class="question-desc">${node.description}</p>`;
+
+ if (node.type === "question") {
+ html += `<div class="options-list">`;
+ node.options.forEach(opt => {
+ html += `
+ <button type="button" class="option-btn" onclick="selectOption('${opt.next}')">
+ <span class="option-label">${opt.label}</span>
+ <span class="option-sub">${opt.sub}</span>
+ </button>
+ `;
+ });
+ html += `</div>`;
+ } else if (node.type === "terminal") {
+ html += `<div class="boxes-grid">`;
+ node.boxes.forEach(box => {
+ const highlightClass = box.isHighlight ? " highlight-box" : "";
+ const hasButtons = Boolean(box.file && box.href);
+ const noBtnClass = hasButtons ? "" : " no-btn";
+ html += `<div class="action-box${highlightClass}">`;
+ html += `<div class="action-box-title">${box.title}</div>`;
+ html += `<p class="action-box-body${noBtnClass}">${box.body}</p>`;
+ if (hasButtons) {
+ html += `<div class="card-actions">`;
+ html += `<a class="open-pdf-btn" href="${box.href}" target="_blank" rel="noopener">Open PDF</a>`;
+ if (box.emailKey && emailTemplates[box.emailKey]) {
+ html += `<button type="button" class="copy-email-btn" onclick="copyEmailTemplate(this, '${box.emailKey}')">Copy Email Text</button>`;
+ }
+ html += `</div>`;
+ }
+ html += `</div>`;
+ });
+ html += `</div>`;
+
+ if (node.trackerHref) {
+ html += `
+ <div class="tracker-banner">
+ <div class="tracker-banner-text">
+ <strong>Log Your Request &amp; Set Statutory Deadline Alarms</strong>
+ Track when each email was sent and calculate your 1 calendar month or 40-day due dates automatically.
+ </div>
+ <a class="open-tracker-btn" href="${node.trackerHref}" target="_blank" rel="noopener">Open Correspondence Tracker</a>
+ </div>
+ `;
+ }
+ }
+
+ contentEl.innerHTML = html;
+ }
+
+ function selectOption(nextId) {
+ if (nodes[nextId]) {
+ historyStack.push(nextId);
+ renderCurrentNode();
+ }
+ }
+
+ function goBack() {
+ if (historyStack.length > 1) {
+ historyStack.pop();
+ renderCurrentNode();
+ }
+ }
+
+ function restartRoute() {
+ historyStack = ["start"];
+ renderCurrentNode();
+ }
+
+ document.addEventListener("DOMContentLoaded", renderCurrentNode);
+ </script>
+</body>
+</html>

@@ -1,0 +1,959 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>CHC Claim &amp; Correspondence Tracker - CHC Blueprint</title>
+ <style>
+ :root {
+ --chc-navy: #1E3A8A;
+ --chc-green: #188038;
+ --chc-light-bg: #EBF2FA;
+ --chc-border: #1E3A8A;
+ --chc-slate-dark: #1E293B;
+ --chc-slate-body: #334155;
+ --chc-footer-bg: #F3F4F6;
+ }
+ *, *::before, *::after {
+ box-sizing: border-box;
+ }
+ body {
+ font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+ color: var(--chc-slate-dark);
+ line-height: 1.4;
+ max-width: 1140px;
+ margin: 0 auto;
+ padding: 18px 20px 30px 20px;
+ background-color: #f8fafc;
+ -webkit-font-smoothing: antialiased;
+ }
+ h1 {
+ color: var(--chc-navy);
+ text-align: center;
+ margin: 0 0 4px 0;
+ font-size: 26px;
+ font-weight: 800;
+ }
+ .subtitle-main {
+ text-align: center;
+ font-size: 16px;
+ font-weight: 600;
+ color: var(--chc-navy);
+ margin-bottom: 16px;
+ }
+ .container {
+ max-width: 1140px;
+ margin: 0 auto;
+ background: #ffffff;
+ border: 2px solid var(--chc-border);
+ border-radius: 10px;
+ padding: 16px 20px;
+ box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+ }
+ .request-type-bar {
+ background-color: var(--chc-light-bg);
+ border: 1.5px solid var(--chc-border);
+ border-radius: 8px;
+ padding: 10px 14px;
+ margin-bottom: 14px;
+ display: flex;
+ align-items: center;
+ justify-content: space-between;
+ font-size: 16px;
+ font-weight: 600;
+ color: var(--chc-navy);
+ flex-wrap: wrap;
+ gap: 10px;
+ }
+ select.request-type-select {
+ padding: 6px 10px;
+ border: 1px solid #cbd5e1;
+ border-radius: 5px;
+ font-size: 16px;
+ font-family: inherit;
+ font-weight: 600;
+ color: var(--chc-slate-dark);
+ background-color: #fff;
+ cursor: pointer;
+ }
+ select.request-type-select:focus {
+ outline: none;
+ border-color: var(--chc-navy);
+ box-shadow: 0 0 0 2px rgba(30, 58, 138, 0.25);
+ }
+ .card {
+ border: 1.5px solid var(--chc-border);
+ border-radius: 8px;
+ background-color: var(--chc-light-bg);
+ margin-bottom: 14px;
+ overflow-x: auto;
+ }
+ .card-title {
+ font-size: 16px;
+ font-weight: 700;
+ color: #ffffff;
+ background-color: var(--chc-navy);
+ padding: 8px 12px;
+ }
+ table {
+ width: 100%;
+ min-width: 860px;
+ border-collapse: collapse;
+ background-color: #ffffff;
+ }
+ th {
+ font-size: 12px;
+ font-weight: 700;
+ color: var(--chc-navy);
+ text-transform: uppercase;
+ letter-spacing: 0.03em;
+ white-space: nowrap;
+ padding: 7px 4px;
+ text-align: center;
+ border-bottom: 1.5px solid #d1d5db;
+ background-color: #f1f5f9;
+ }
+ th.col-item {
+ text-align: left;
+ padding-left: 12px;
+ }
+ th.col-check, td.col-check {
+ text-align: center;
+ width: 14%;
+ }
+ td {
+ padding: 6px 4px;
+ border-bottom: 1px solid #e2e8f0;
+ font-size: 16px;
+ color: var(--chc-slate-dark);
+ vertical-align: middle;
+ text-align: center;
+ }
+ td.col-item {
+ text-align: left;
+ padding-left: 12px;
+ font-weight: 600;
+ color: var(--chc-slate-dark);
+ white-space: nowrap;
+ }
+ tr:last-child td {
+ border-bottom: none;
+ }
+ input[type="checkbox"] {
+ width: 18px;
+ height: 18px;
+ accent-color: var(--chc-navy);
+ cursor: pointer;
+ }
+ .date-cell-wrapper {
+ display: flex;
+ align-items: center;
+ position: relative;
+ justify-content: center;
+ }
+ input.date-input {
+ width: 78px;
+ padding: 5px 4px;
+ border: 1px solid #cbd5e1;
+ border-radius: 4px;
+ font-size: 16px;
+ font-family: inherit;
+ color: var(--chc-slate-dark);
+ background-color: #fff;
+ text-align: center;
+ }
+ input.date-input::placeholder {
+ color: #94a3b8;
+ opacity: 1;
+ }
+ input.date-input:focus {
+ outline: none;
+ border-color: var(--chc-navy);
+ box-shadow: 0 0 0 2px rgba(30, 58, 138, 0.25);
+ }
+ input.provider-input {
+ width: 100%;
+ padding: 5px 8px;
+ border: 1px solid #cbd5e1;
+ border-radius: 4px;
+ font-size: 16px;
+ font-family: inherit;
+ font-weight: 600;
+ color: var(--chc-slate-dark);
+ background-color: #fff;
+ }
+ input.provider-input::placeholder {
+ color: #94a3b8;
+ font-weight: 400;
+ opacity: 1;
+ }
+ input.provider-input:focus {
+ outline: none;
+ border-color: var(--chc-navy);
+ box-shadow: 0 0 0 2px rgba(30, 58, 138, 0.25);
+ }
+ .cal-btn, .alarm-btn {
+ background: none;
+ border: none;
+ cursor: pointer;
+ padding: 2px;
+ margin-left: 2px;
+ display: flex;
+ align-items: center;
+ color: #64748b;
+ }
+ .cal-btn:hover, .alarm-btn:hover {
+ color: var(--chc-navy);
+ }
+ .cal-btn svg, .alarm-btn svg {
+ width: 15px;
+ height: 15px;
+ fill: currentColor;
+ }
+ input.date-input.overdue {
+ background-color: #fef2f2 !important;
+ border-color: #dc2626 !important;
+ color: #991b1b !important;
+ font-weight: 700;
+ }
+ tr.row-overdue td.col-item {
+ color: #991b1b;
+ }
+ .overdue-banner {
+ display: none;
+ background-color: #fef2f2;
+ border: 2px solid #dc2626;
+ border-radius: 8px;
+ padding: 12px 14px;
+ margin-bottom: 14px;
+ color: #991b1b;
+ font-size: 16px;
+ align-items: center;
+ justify-content: space-between;
+ gap: 10px;
+ }
+ .overdue-banner.active {
+ display: flex;
+ }
+ .overdue-banner-text {
+ font-weight: 600;
+ }
+ .request-bar-actions {
+ display: flex;
+ align-items: center;
+ gap: 8px;
+ flex-wrap: wrap;
+ }
+ .sync-cal-btn {
+ background-color: var(--chc-navy);
+ color: #ffffff;
+ border: none;
+ border-radius: 6px;
+ padding: 7px 12px;
+ font-size: 15px;
+ font-weight: 600;
+ cursor: pointer;
+ display: inline-flex;
+ align-items: center;
+ gap: 6px;
+ transition: opacity 0.2s ease;
+ }
+ .sync-cal-btn:hover {
+ opacity: 0.92;
+ }
+ .hidden-date {
+ position: absolute;
+ opacity: 0;
+ pointer-events: none;
+ width: 0;
+ height: 0;
+ }
+ .next-steps-container {
+ border: 2px solid var(--chc-border);
+ background-color: var(--chc-footer-bg);
+ padding: 14px;
+ border-radius: 8px;
+ margin-top: 16px;
+ margin-bottom: 14px;
+ text-align: center;
+ }
+ .next-steps-title {
+ font-size: 15px;
+ font-weight: 700;
+ text-transform: uppercase;
+ color: var(--chc-navy);
+ margin-bottom: 4px;
+ letter-spacing: 0.05em;
+ }
+ .next-steps-subtitle {
+ font-size: 15px;
+ font-style: italic;
+ color: var(--chc-slate-body);
+ margin-bottom: 10px;
+ }
+ .btn-single {
+ display: block;
+ background-color: var(--chc-green);
+ color: #ffffff;
+ text-decoration: none;
+ padding: 12px 18px;
+ border-radius: 6px;
+ font-size: 17px;
+ font-weight: 700;
+ text-align: center;
+ box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+ max-width: 380px;
+ margin: 0 auto;
+ transition: opacity 0.2s ease;
+ }
+ .btn-single:hover {
+ opacity: 0.92;
+ }
+ .btn-single span {
+ display: block;
+ font-size: 15px;
+ font-weight: 500;
+ color: #ffffff;
+ margin-top: 2px;
+ }
+ .controls {
+ display: flex;
+ justify-content: space-between;
+ align-items: center;
+ flex-wrap: wrap;
+ gap: 10px;
+ margin-top: 8px;
+ font-size: 15px;
+ color: var(--chc-slate-body);
+ }
+ .control-buttons {
+ display: flex;
+ align-items: center;
+ gap: 8px;
+ flex-wrap: wrap;
+ }
+ .backup-btn {
+ background-color: #ffffff;
+ border: 1px solid #94a3b8;
+ color: var(--chc-navy);
+ padding: 6px 11px;
+ border-radius: 5px;
+ cursor: pointer;
+ font-size: 14px;
+ font-weight: 600;
+ font-family: inherit;
+ }
+ .backup-btn:hover {
+ background-color: #eff6ff;
+ border-color: var(--chc-navy);
+ }
+ .reset-btn {
+ background-color: #ffffff;
+ border: 1px solid #cbd5e1;
+ color: #64748b;
+ padding: 6px 11px;
+ border-radius: 5px;
+ cursor: pointer;
+ font-size: 14px;
+ font-family: inherit;
+ }
+ .reset-btn:hover {
+ background: #fee2e2;
+ color: #991b1b;
+ border-color: #fca5a5;
+ }
+ </style>
+</head>
+<body>
+
+<h1>CHC Blueprint</h1>
+<div class="subtitle-main">Correspondence Tracker</div>
+
+<div class="container">
+ <div id="overdueBanner" class="overdue-banner">
+ <div class="overdue-banner-text" id="overdueBannerText">
+ Statutory deadline exceeded! One or more providers are overdue. Please refer to your Template Pack for your formal and informal chaser letters.
+ </div>
+ </div>
+
+ <div class="request-type-bar">
+ <div class="request-bar-actions">
+ <label for="requestTypeSelect">Select Legal Basis of Requests:</label>
+ <select id="requestTypeSelect" class="request-type-select">
+ <option value="SAR">SAR (Subject Access Request - Living Claimant)</option>
+ <option value="AHRA">AHRA (Access to Health Records Act - Deceased Claimant)</option>
+ </select>
+ </div>
+ <button type="button" class="sync-cal-btn" onclick="exportAllRemindersICS()" title="Download calendar alarm file (.ics) for all active Due Dates &amp; Chaser Due Dates">
+ Export All Alarms to Calendar
+ </button>
+ </div>
+
+ <div id="trackerSections"></div>
+
+ <div class="next-steps-container">
+ <div class="next-steps-title">Ready to take the next step?</div>
+ <div class="next-steps-subtitle">Don't forget to claim your £49 Template Pack credit against your audit.</div>
+ <!-- Replace href below with your Stripe checkout link when ready -->
+ <a href="https://chcblueprint.co.uk" target="_blank" rel="noopener" class="btn-single">
+ Got Everything?<br/>
+ <span>Get Your Audit (£249)</span>
+ </a>
+ </div>
+
+ <div class="controls">
+ <span>Progress saves automatically on this device.</span>
+ <div class="control-buttons">
+ <button type="button" class="backup-btn" onclick="exportTrackerBackup()">Save Backup</button>
+ <button type="button" class="backup-btn" onclick="document.getElementById('restoreFileInput').click()">Restore Backup</button>
+ <input type="file" id="restoreFileInput" accept=".json" style="display: none;" onchange="importTrackerBackup(event)">
+ <button type="button" class="reset-btn" onclick="resetTracker()">Reset Tracker</button>
+ </div>
+ </div>
+</div>
+
+<script>
+ const sectionsConfig = [
+ {
+ title: "Absolute Minimum (Start Here)",
+ headerLabel: "Record Type",
+ rows: [
+ { label: "GP Practice Manager", chkId: "trk_1" },
+ { label: "Care Home Manager / Care Agency", chkId: "trk_2" }
+ ]
+ },
+ {
+ title: "Extended Core Providers",
+ headerLabel: "Record Type",
+ rows: [
+ { label: "Local Authority / Social Services", chkId: "trk_3" },
+ { label: "Community Health / District Nursing", chkId: "trk_4" },
+ { label: "Integrated Care Board", chkId: "trk_5" },
+ { label: "Hospital Inpatient & Outpatient Services", chkId: "trk_6" }
+ ]
+ },
+ {
+ title: "Specialist Providers (Fill in box if required)",
+ headerLabel: "Record Type / Provider Name",
+ rows: [
+ { provId: "prov_1", placeholder: "e.g. Mental Health Trust / Hospice", chkId: "trk_7" },
+ { provId: "prov_2", placeholder: "e.g. Memory Clinic / Ambulance Trust", chkId: "trk_8" },
+ { provId: "prov_3", placeholder: "e.g. Dental / Optometry Provider", chkId: "trk_9" }
+ ]
+ }
+ ];
+
+ function buildTrackerTables() {
+ const container = document.getElementById('trackerSections');
+ const calSvg = '<svg viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zM9 14H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2zm-8 4H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2z"/></svg>';
+ const dateCell = `<td><div class="date-cell-wrapper"><input type="text" class="date-input" placeholder="DD/MM" maxlength="5"><button type="button" class="cal-btn" tabindex="-1" title="Select date">${calSvg}</button><input type="date" class="hidden-date" tabindex="-1"></div></td>`;
+
+ container.innerHTML = sectionsConfig.map(sec => {
+ const rowsHtml = sec.rows.map(r => {
+ const itemHtml = r.provId
+ ? `<input type="text" class="provider-input" id="${r.provId}" placeholder="${r.placeholder}">`
+ : r.label;
+ return `<tr><td class="col-item">${itemHtml}</td>${dateCell}${dateCell}${dateCell}${dateCell}<td class="col-check"><input type="checkbox" id="${r.chkId}"></td></tr>`;
+ }).join('');
+
+ return `
+ <div class="card">
+ <div class="card-title">${sec.title}</div>
+ <table>
+ <thead>
+ <tr>
+ <th class="col-item" style="width: 36%;">${sec.headerLabel}</th>
+ <th style="width: 12.5%;">Date Sent</th>
+ <th style="width: 12.5%;">Due Date</th>
+ <th style="width: 12.5%;">Chaser Sent</th>
+ <th style="width: 12.5%;">Chaser Due</th>
+ <th class="col-check" style="width: 14%;">Got It</th>
+ </tr>
+ </thead>
+ <tbody>${rowsHtml}</tbody>
+ </table>
+ </div>
+ `;
+ }).join('');
+ }
+
+ document.addEventListener("DOMContentLoaded", () => {
+ buildTrackerTables();
+
+ const requestTypeSelect = document.getElementById('requestTypeSelect');
+ const urlParams = new URLSearchParams(window.location.search);
+ const paramBasis = urlParams.get('basis');
+
+ if (paramBasis === 'SAR' || paramBasis === 'AHRA') {
+ requestTypeSelect.value = paramBasis;
+ try { localStorage.setItem('chc_request_type', paramBasis); } catch (e) { sessionStorage.setItem('chc_request_type', paramBasis); }
+ } else {
+ const savedReqType = localStorage.getItem('chc_request_type') || sessionStorage.getItem('chc_request_type');
+ if (savedReqType !== null) requestTypeSelect.value = savedReqType;
+ }
+
+ requestTypeSelect.addEventListener("change", () => {
+ const val = requestTypeSelect.value;
+ try { localStorage.setItem('chc_request_type', val); } catch (e) { sessionStorage.setItem('chc_request_type', val); }
+ recalculateAllDueDates();
+ evaluateOverdueAlarms();
+ });
+
+ const providerInputs = document.querySelectorAll('input.provider-input');
+ providerInputs.forEach(prov => {
+ const savedProv = localStorage.getItem(prov.id) || sessionStorage.getItem(prov.id);
+ if (savedProv !== null) prov.value = savedProv;
+ prov.addEventListener("input", () => {
+ try { localStorage.setItem(prov.id, prov.value); } catch (e) { sessionStorage.setItem(prov.id, prov.value); }
+ });
+ });
+
+ const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+ checkboxes.forEach(chk => {
+ const savedState = localStorage.getItem(chk.id) || sessionStorage.getItem(chk.id);
+ if (savedState === "true") chk.checked = true;
+ chk.addEventListener("change", () => {
+ try { localStorage.setItem(chk.id, chk.checked); } catch (e) { sessionStorage.setItem(chk.id, chk.checked); }
+ });
+ });
+
+ const wrappers = document.querySelectorAll('.date-cell-wrapper');
+ const inputs = document.querySelectorAll('input.date-input');
+
+ inputs.forEach((input, index) => {
+ const inputKey = "tracker_date_" + index;
+ const savedVal = localStorage.getItem(inputKey) || sessionStorage.getItem(inputKey);
+ if (savedVal !== null) input.value = savedVal;
+
+ const forceStart = () => requestAnimationFrame(() => input.setSelectionRange(0, 0));
+ input.addEventListener("focus", forceStart);
+ input.addEventListener("click", forceStart);
+
+ const wrapper = wrappers[index];
+ const calBtn = wrapper.querySelector('.cal-btn');
+ const hiddenDate = wrapper.querySelector('.hidden-date');
+
+ calBtn.addEventListener("click", () => {
+ if (typeof hiddenDate.showPicker === 'function') hiddenDate.showPicker();
+ else hiddenDate.click();
+ });
+
+ hiddenDate.addEventListener("change", () => {
+ if (hiddenDate.value) {
+ const parts = hiddenDate.value.split("-");
+ if (parts.length === 3) {
+ const formatted = parts[2] + "/" + parts[1];
+ input.value = formatted;
+ saveAndProcessDate(input, formatted, index);
+ }
+ }
+ });
+
+ input.addEventListener("keydown", (e) => {
+ if (e.key === "Enter") {
+ e.preventDefault();
+ const nextInput = document.querySelectorAll('input.date-input')[index + 4];
+ if (nextInput) {
+ nextInput.focus();
+ nextInput.setSelectionRange(0, 0);
+ }
+ }
+ });
+
+ input.addEventListener("input", () => {
+ let val = input.value.replace(/\D/g, "").slice(0, 4);
+ if (val.length >= 2) {
+ let dd = Math.min(31, Math.max(1, parseInt(val.slice(0, 2), 10)));
+ val = String(dd).padStart(2, '0') + val.slice(2);
+ }
+ if (val.length >= 4) {
+ let mm = Math.min(12, Math.max(1, parseInt(val.slice(2, 4), 10)));
+ val = val.slice(0, 2) + String(mm).padStart(2, '0');
+ }
+ const formatted = val.length >= 3 ? val.slice(0, 2) + "/" + val.slice(2, 4) : val.slice(0, 2);
+ input.value = formatted;
+ saveAndProcessDate(input, formatted, index);
+ });
+ });
+
+ function saveAndProcessDate(input, formatted, index) {
+ const inputKey = "tracker_date_" + index;
+ try { localStorage.setItem(inputKey, formatted); } catch (e) { sessionStorage.setItem(inputKey, formatted); }
+
+ const colIndex = index % 4;
+ const rowIndex = Math.floor(index / 4);
+
+ if (formatted.length === 5) {
+ if (colIndex === 0) calculateAndSetDueDate(rowIndex, formatted);
+ else if (colIndex === 2) calculateAndSetChaserDueDate(rowIndex, formatted);
+
+ evaluateOverdueAlarms();
+ setTimeout(() => {
+ const nextInput = document.querySelectorAll('input.date-input')[index + 4];
+ if (nextInput) {
+ nextInput.focus();
+ nextInput.setSelectionRange(0, 0);
+ }
+ }, 10);
+ } else if (formatted.length === 0) {
+ const allInputs = document.querySelectorAll('input.date-input');
+ if (colIndex === 0) {
+ allInputs[rowIndex * 4 + 1].value = "";
+ localStorage.removeItem("tracker_date_" + (rowIndex * 4 + 1));
+ sessionStorage.removeItem("tracker_date_" + (rowIndex * 4 + 1));
+ } else if (colIndex === 2) {
+ allInputs[rowIndex * 4 + 3].value = "";
+ localStorage.removeItem("tracker_date_" + (rowIndex * 4 + 3));
+ sessionStorage.removeItem("tracker_date_" + (rowIndex * 4 + 3));
+ }
+ evaluateOverdueAlarms();
+ } else {
+ evaluateOverdueAlarms();
+ }
+ }
+
+ function calculateAndSetDueDate(rowIndex, dateSentStr) {
+ const targetDateStr = requestTypeSelect.value === 'AHRA'
+ ? addDaysToDDMM(dateSentStr, 40)
+ : addOneCalendarMonthToDDMM(dateSentStr);
+ if (targetDateStr) {
+ const dueIndex = rowIndex * 4 + 1;
+ document.querySelectorAll('input.date-input')[dueIndex].value = targetDateStr;
+ try { localStorage.setItem("tracker_date_" + dueIndex, targetDateStr); } catch (e) { sessionStorage.setItem("tracker_date_" + dueIndex, targetDateStr); }
+ }
+ }
+
+ function calculateAndSetChaserDueDate(rowIndex, chaserSentStr) {
+ const targetDateStr = addDaysToDDMM(chaserSentStr, 7);
+ if (targetDateStr) {
+ const chaserDueIndex = rowIndex * 4 + 3;
+ document.querySelectorAll('input.date-input')[chaserDueIndex].value = targetDateStr;
+ try { localStorage.setItem("tracker_date_" + chaserDueIndex, targetDateStr); } catch (e) { sessionStorage.setItem("tracker_date_" + chaserDueIndex, targetDateStr); }
+ }
+ }
+
+ function recalculateAllDueDates() {
+ const allInputs = document.querySelectorAll('input.date-input');
+ for (let r = 0; r < 9; r++) {
+ const sentInput = allInputs[r * 4];
+ if (sentInput && sentInput.value.length === 5) calculateAndSetDueDate(r, sentInput.value);
+ }
+ }
+
+ function addOneCalendarMonthToDDMM(ddmmStr) {
+ const parts = ddmmStr.split("/");
+ if (parts.length !== 2) return "";
+ const sentDay = parseInt(parts[0], 10);
+ const sentMonth = parseInt(parts[1], 10) - 1;
+ if (isNaN(sentDay) || isNaN(sentMonth)) return "";
+
+ const now = new Date();
+ let sentYear = now.getFullYear();
+ if (sentMonth > now.getMonth() + 2) {
+ sentYear = now.getFullYear() - 1;
+ }
+
+ const maxDaysInTargetMonth = new Date(sentYear, sentMonth + 2, 0).getDate();
+ const targetDay = Math.min(sentDay, maxDaysInTargetMonth);
+ const dateObj = new Date(sentYear, sentMonth + 1, targetDay);
+ return String(dateObj.getDate()).padStart(2, '0') + "/" + String(dateObj.getMonth() + 1).padStart(2, '0');
+ }
+
+ function addDaysToDDMM(ddmmStr, daysToAdd) {
+ const parts = ddmmStr.split("/");
+ if (parts.length !== 2) return "";
+ const dateObj = new Date(new Date().getFullYear(), parseInt(parts[1], 10) - 1, parseInt(parts[0], 10));
+ dateObj.setDate(dateObj.getDate() + daysToAdd);
+ return String(dateObj.getDate()).padStart(2, '0') + "/" + String(dateObj.getMonth() + 1).padStart(2, '0');
+ }
+
+ wrappers.forEach((wrapper, index) => {
+ const colIndex = index % 4;
+ const rowIndex = Math.floor(index / 4);
+ if (colIndex === 1 || colIndex === 3) {
+ const alarmBtn = document.createElement('button');
+ alarmBtn.type = 'button';
+ alarmBtn.className = 'alarm-btn';
+ alarmBtn.tabIndex = -1;
+ alarmBtn.title = 'Set Calendar & Email Alarm (.ics) for this deadline';
+ alarmBtn.innerHTML = '<svg viewBox="0 0 24 24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg>';
+ alarmBtn.addEventListener('click', () => exportSingleReminderICS(rowIndex, colIndex));
+ wrapper.appendChild(alarmBtn);
+ }
+ });
+
+ checkboxes.forEach(chk => chk.addEventListener("change", evaluateOverdueAlarms));
+ providerInputs.forEach(prov => prov.addEventListener("input", evaluateOverdueAlarms));
+
+ if (paramBasis === 'SAR' || paramBasis === 'AHRA') recalculateAllDueDates();
+ evaluateOverdueAlarms();
+
+ const firstInput = document.querySelector('input.date-input');
+ if (firstInput) {
+ firstInput.focus();
+ firstInput.setSelectionRange(0, 0);
+ }
+ });
+
+ function getProviderNameForRow(rowIndex) {
+ const row = document.querySelectorAll('tbody tr')[rowIndex];
+ if (!row) return "Provider " + (rowIndex + 1);
+ const itemCell = row.querySelector('td.col-item');
+ const input = itemCell.querySelector('input.provider-input');
+ return input ? (input.value.trim() || input.placeholder.replace('e.g. ', '')) : itemCell.textContent.trim();
+ }
+
+ function parseDDMMToDate(ddmmStr, sentDdmmStr) {
+ if (!ddmmStr || ddmmStr.length !== 5) return null;
+ const parts = ddmmStr.split("/");
+ if (parts.length !== 2) return null;
+ const day = parseInt(parts[0], 10);
+ const month = parseInt(parts[1], 10) - 1;
+ if (isNaN(day) || isNaN(month)) return null;
+
+ const now = new Date();
+ let sentYear = now.getFullYear();
+ let dueYear = sentYear;
+
+ if (sentDdmmStr && sentDdmmStr.length === 5) {
+ const sentParts = sentDdmmStr.split("/");
+ const sentDay = parseInt(sentParts[0], 10);
+ const sentMonth = parseInt(sentParts[1], 10) - 1;
+
+ if (!isNaN(sentDay) && !isNaN(sentMonth)) {
+ if (sentMonth > now.getMonth() + 2) {
+ sentYear = now.getFullYear() - 1;
+ }
+ dueYear = sentYear;
+ if (month < sentMonth || (month === sentMonth && day < sentDay)) {
+ dueYear = sentYear + 1;
+ }
+ }
+ }
+
+ return new Date(dueYear, month, day, 9, 0, 0);
+ }
+
+ function evaluateOverdueAlarms() {
+ const allInputs = document.querySelectorAll('input.date-input');
+ const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+ const rows = document.querySelectorAll('tbody tr');
+ const today = new Date();
+ today.setHours(0, 0, 0, 0);
+ let overdueProviders = [];
+
+ for (let r = 0; r < 9; r++) {
+ const row = rows[r];
+ const isGotIt = checkboxes[r] && checkboxes[r].checked;
+ const sentInput = allInputs[r * 4];
+ const dueInput = allInputs[r * 4 + 1];
+ const chaserSentInput = allInputs[r * 4 + 2];
+ const chaserDueInput = allInputs[r * 4 + 3];
+
+ dueInput.classList.remove('overdue');
+ chaserDueInput.classList.remove('overdue');
+ row.classList.remove('row-overdue');
+
+ if (isGotIt) continue;
+ let rowIsOverdue = false;
+
+ if (dueInput.value.length === 5) {
+ const d = parseDDMMToDate(dueInput.value, sentInput.value);
+ if (d && new Date(d.getFullYear(), d.getMonth(), d.getDate()) < today) {
+ dueInput.classList.add('overdue');
+ rowIsOverdue = true;
+ }
+ }
+ if (chaserDueInput.value.length === 5) {
+ const cd = parseDDMMToDate(chaserDueInput.value, chaserSentInput.value);
+ if (cd && new Date(cd.getFullYear(), cd.getMonth(), cd.getDate()) < today) {
+ chaserDueInput.classList.add('overdue');
+ rowIsOverdue = true;
+ }
+ }
+ if (rowIsOverdue) {
+ row.classList.add('row-overdue');
+ overdueProviders.push(getProviderNameForRow(r));
+ }
+ }
+
+ const banner = document.getElementById('overdueBanner');
+ const bannerText = document.getElementById('overdueBannerText');
+ if (overdueProviders.length > 0) {
+ banner.classList.add('active');
+ bannerText.textContent = "Deadline Exceeded (" + overdueProviders.length + "): " + overdueProviders.join(", ") + ". Please refer to your Template Pack for your formal or informal chaser letters.";
+ } else {
+ banner.classList.remove('active');
+ }
+ }
+
+ function formatICSDate(dateObj) {
+ return "" + dateObj.getFullYear() + String(dateObj.getMonth() + 1).padStart(2, '0') + String(dateObj.getDate()).padStart(2, '0');
+ }
+
+ function buildICSEvent(providerName, deadlineType, dueDateObj, reqType) {
+ const dateStr = formatICSDate(dueDateObj);
+ const uid = "chc-" + dateStr + "-" + Math.random().toString(36).substring(2, 9) + "@chcblueprint.co.uk";
+ const summary = "CHC ALARM: " + providerName + " (" + deadlineType + ")";
+ const description = "Statutory records deadline (" + reqType + ") for " + providerName + ". Open your CHC Blueprint Correspondence Tracker to check status or send a chaser letter.";
+
+ return [
+ "BEGIN:VEVENT", "UID:" + uid, "DTSTAMP:" + dateStr + "T090000Z", "DTSTART;VALUE=DATE:" + dateStr,
+ "SUMMARY:" + summary, "DESCRIPTION:" + description,
+ "BEGIN:VALARM", "TRIGGER:-PT9H", "ACTION:DISPLAY", "DESCRIPTION:" + summary, "END:VALARM",
+ "BEGIN:VALARM", "TRIGGER:PT9H", "ACTION:EMAIL", "SUMMARY:" + summary, "DESCRIPTION:" + description, "END:VALARM",
+ "END:VEVENT"
+ ].join("\r\n");
+ }
+
+ function downloadICSFile(eventsArray, filename) {
+ const icsContent = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//CHC Blueprint//Correspondence Tracker//EN", "CALSCALE:GREGORIAN", "METHOD:PUBLISH", eventsArray.join("\r\n"), "END:VCALENDAR"].join("\r\n");
+ const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
+ const url = URL.createObjectURL(blob);
+ const a = document.createElement('a');
+ a.href = url;
+ a.download = filename;
+ document.body.appendChild(a);
+ a.click();
+ document.body.removeChild(a);
+ URL.revokeObjectURL(url);
+ }
+
+ function exportSingleReminderICS(rowIndex, colIndex) {
+ const allInputs = document.querySelectorAll('input.date-input');
+ const reqType = document.getElementById('requestTypeSelect').value;
+ const targetInput = allInputs[rowIndex * 4 + colIndex];
+ const parentInput = allInputs[rowIndex * 4 + (colIndex - 1)];
+
+ if (!targetInput || targetInput.value.length !== 5) {
+ alert("Please enter a Date Sent (or Chaser Sent date) first so the Due Date is calculated before setting a calendar alarm.");
+ return;
+ }
+
+ const providerName = getProviderNameForRow(rowIndex);
+ const dueDateObj = parseDDMMToDate(targetInput.value, parentInput ? parentInput.value : "");
+ if (!dueDateObj) return;
+ downloadICSFile([buildICSEvent(providerName, colIndex === 1 ? "Statutory Due Date" : "Chaser Due Date", dueDateObj, reqType)], "chc-alarm-" + providerName.toLowerCase().replace(/[^a-z0-9]+/g, "-") + ".ics");
+ }
+
+ function exportAllRemindersICS() {
+ const allInputs = document.querySelectorAll('input.date-input');
+ const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+ const reqType = document.getElementById('requestTypeSelect').value;
+ let events = [];
+
+ for (let r = 0; r < 9; r++) {
+ if (checkboxes[r] && checkboxes[r].checked) continue;
+ const providerName = getProviderNameForRow(r);
+ const sentInput = allInputs[r * 4];
+ const dueInput = allInputs[r * 4 + 1];
+ const chaserSentInput = allInputs[r * 4 + 2];
+ const chaserDueInput = allInputs[r * 4 + 3];
+
+ if (dueInput.value.length === 5) {
+ const d = parseDDMMToDate(dueInput.value, sentInput.value);
+ if (d) events.push(buildICSEvent(providerName, "Statutory Due Date", d, reqType));
+ }
+ if (chaserDueInput.value.length === 5) {
+ const cd = parseDDMMToDate(chaserDueInput.value, chaserSentInput.value);
+ if (cd) events.push(buildICSEvent(providerName, "Chaser Due Date", cd, reqType));
+ }
+ }
+
+ if (events.length === 0) {
+ alert("No active Due Dates found! Enter at least one 'Date Sent' (and leave 'Got It' unticked) to export calendar & email alarms.");
+ return;
+ }
+ downloadICSFile(events, "chc-all-due-date-alarms.ics");
+ }
+
+ function exportTrackerBackup() {
+ const backupData = { chc_request_type: document.getElementById('requestTypeSelect').value, providers: {}, checkboxes: {}, dates: {} };
+ document.querySelectorAll('input.provider-input').forEach(p => backupData.providers[p.id] = p.value);
+ document.querySelectorAll('input[type="checkbox"]').forEach(c => backupData.checkboxes[c.id] = c.checked);
+ document.querySelectorAll('input.date-input').forEach((inp, i) => backupData.dates[i] = inp.value);
+
+ const blob = new Blob([JSON.stringify(backupData, null, 2)], { type: 'application/json' });
+ const url = URL.createObjectURL(blob);
+ const a = document.createElement('a');
+ a.href = url;
+ a.download = 'chc-tracker-backup.json';
+ document.body.appendChild(a);
+ a.click();
+ document.body.removeChild(a);
+ URL.revokeObjectURL(url);
+ }
+
+ function importTrackerBackup(event) {
+ const file = event.target.files[0];
+ if (!file) return;
+ const reader = new FileReader();
+ reader.onload = function(e) {
+ try {
+ const data = JSON.parse(e.target.result);
+ if (data.chc_request_type) {
+ document.getElementById('requestTypeSelect').value = data.chc_request_type;
+ localStorage.setItem('chc_request_type', data.chc_request_type);
+ }
+ if (data.providers) {
+ Object.keys(data.providers).forEach(id => {
+ const el = document.getElementById(id);
+ if (el) { el.value = data.providers[id]; localStorage.setItem(id, data.providers[id]); }
+ });
+ }
+ if (data.checkboxes) {
+ Object.keys(data.checkboxes).forEach(id => {
+ const el = document.getElementById(id);
+ if (el) { el.checked = Boolean(data.checkboxes[id]); localStorage.setItem(id, el.checked); }
+ });
+ }
+ if (data.dates) {
+ const inputs = document.querySelectorAll('input.date-input');
+ Object.keys(data.dates).forEach(idx => {
+ const i = parseInt(idx, 10);
+ if (inputs[i]) { inputs[i].value = data.dates[idx]; localStorage.setItem('tracker_date_' + i, data.dates[idx]); }
+ });
+ }
+ evaluateOverdueAlarms();
+ alert('Tracker backup restored successfully.');
+ } catch (err) {
+ alert('Could not read that backup file. Please select a valid chc-tracker-backup.json file.');
+ }
+ event.target.value = '';
+ };
+ reader.readAsText(file);
+ }
+
+ function resetTracker() {
+ if (confirm("Are you sure you want to clear the legal basis, provider names, dates and checkboxes?")) {
+ document.getElementById('requestTypeSelect').value = "SAR";
+ localStorage.removeItem('chc_request_type');
+ sessionStorage.removeItem('chc_request_type');
+
+ document.querySelectorAll('input[type="checkbox"]').forEach(chk => {
+ chk.checked = false;
+ localStorage.removeItem(chk.id);
+ sessionStorage.removeItem(chk.id);
+ });
+ document.querySelectorAll('input.provider-input').forEach(prov => {
+ prov.value = "";
+ localStorage.removeItem(prov.id);
+ sessionStorage.removeItem(prov.id);
+ });
+ document.querySelectorAll('input.date-input').forEach((input, index) => {
+ input.value = "";
+ localStorage.removeItem("tracker_date_" + index);
+ sessionStorage.removeItem("tracker_date_" + index);
+ });
+
+ evaluateOverdueAlarms();
+ const firstInput = document.querySelector('input.date-input');
+ if (firstInput) {
+ firstInput.focus();
+ firstInput.setSelectionRange(0, 0);
+ }
+ }
+ }
+</script>
+</body>
+</html>
